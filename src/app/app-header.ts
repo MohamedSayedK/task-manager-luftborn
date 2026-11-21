@@ -151,6 +151,8 @@ const BELL_MESSAGES = ['header.bellFirst', 'header.bellSecond', 'header.bellThir
     // pulses, and a shake of the bell now and then.
     .bell {
       position: relative;
+      // The glow ring sits behind the bell, inside the button.
+      isolation: isolate;
       color: var(--app-brand-text);
       cursor: pointer;
     }
@@ -159,7 +161,15 @@ const BELL_MESSAGES = ['header.bellFirst', 'header.bellSecond', 'header.bellThir
       background: var(--app-surface-hover);
     }
 
-    .bell.attention {
+    // The glow is a ring that grows and fades. Only transform and opacity change, so the browser
+    // can animate it on the GPU. Animating a box-shadow cannot be composited.
+    .bell.attention::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--p-primary-color) 45%, transparent);
       animation: bell-glow 2.4s ease-out infinite;
     }
 
@@ -181,12 +191,14 @@ const BELL_MESSAGES = ['header.bellFirst', 'header.bellSecond', 'header.bellThir
     }
 
     @keyframes bell-glow {
-      0% {
-        box-shadow: 0 0 0 0 color-mix(in srgb, var(--p-primary-color) 55%, transparent);
+      from {
+        opacity: 1;
+        transform: scale(1);
       }
       70%,
-      100% {
-        box-shadow: 0 0 0 0.6rem color-mix(in srgb, var(--p-primary-color) 0%, transparent);
+      to {
+        opacity: 0;
+        transform: scale(1.7);
       }
     }
 
@@ -239,9 +251,13 @@ const BELL_MESSAGES = ['header.bellFirst', 'header.bellSecond', 'header.bellThir
         transition: none;
       }
 
-      .bell.attention,
+      .bell.attention::before,
       .bell.attention i {
         animation: none;
+      }
+
+      .bell.attention::before {
+        display: none;
       }
 
       .bell.attention {
