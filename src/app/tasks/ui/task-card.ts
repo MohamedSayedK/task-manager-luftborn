@@ -60,10 +60,15 @@ const PRIORITIES: Record<TaskPriority, { labelKey: string; severity: TagSeverity
       border-inline-start: 4px solid var(--app-error-accent);
     }
 
+    // The popup menu is an empty third child, so space-between would put the button in the middle.
+    // The auto margin pushes the button to the end instead.
     .head {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+    }
+
+    .head p-button {
+      margin-inline-start: auto;
     }
 
     p-tag {
