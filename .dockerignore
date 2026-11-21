@@ -1,0 +1,18 @@
+# Nothing here is needed to build the images, and some of it is large or local.
+node_modules
+dist
+coverage
+.angular
+.git
+.github
+.husky
+.vscode
+.claude
+.mcp.json
+docs
+*.md
+!README.md
+npm-debug.log
+Dockerfile
+docker-compose.yml
+.dockerignore

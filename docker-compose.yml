@@ -1,0 +1,25 @@
+# The whole app with one command: `docker compose up --build`, then open http://localhost:8080.
+# The data of the mock backend resets whenever its container is created again.
+
+services:
+  api:
+    build:
+      context: .
+      target: api
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1:3000/users']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  web:
+    build:
+      context: .
+      target: web
+    ports:
+      - '8080:80'
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
