@@ -70,15 +70,31 @@ npm run start:dev  # Angular dev server on http://localhost:4200
 ```
 
 The dev server proxies `/api/*` to port 3000 (`proxy.conf.json`), so the app calls relative URLs
-such as `/api/tasks`. There are no environment variables. Do not measure performance on the dev
-server: it sends the bundle unminified and uncompressed (3.5 MB instead of 650 kB), and Lighthouse
-scores it around 60 on desktop.
+such as `/api/tasks`. Do not measure performance on the dev server: it sends the bundle
+unminified and uncompressed (3.5 MB instead of 650 kB), and Lighthouse scores it around 60 on
+desktop.
 
 JSON Server rewrites `mock-api/db.json` on every write. To reset the data with fresh dates:
 
 ```bash
 npm run mock:generate
 ```
+
+### Environment configuration
+
+The app has no `.env` file and no secrets: it always calls the relative URL `/api`, and whatever
+serves it decides where that goes. Nothing in the browser bundle changes between environments.
+
+| Where               | How `/api` is reached                                        | Settings                                                                                      |
+| ------------------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| `npm run start:dev` | The Angular dev server proxies it to `http://localhost:3000` | Target in `proxy.conf.json`                                                                   |
+| `npm start`         | `scripts/serve-dist.mjs` forwards it to the mock API         | Environment variables `PORT` (default `4200`) and `API_URL` (default `http://localhost:3000`) |
+| `docker compose up` | nginx forwards it to the `api` container                     | App on port `8080`, set in `docker-compose.yml`; proxy in `docker/nginx.conf`                 |
+| GitHub Pages demo   | An interceptor answers it inside the browser                 | `demo` build configuration in `angular.json`                                                  |
+
+Build configurations in `angular.json`: `production` (the default for `ng build`), `development`
+(used by `ng serve` and `npm run watch`) and `demo` (production plus the in-browser backend). Node.js
+and npm versions are listed under "Prerequisites".
 
 ### The live demo
 
@@ -305,6 +321,39 @@ A screen reader pass has not been done.
 - `CLAUDE.md` and the two architecture documents in `docs/` hold the rules the code follows. The project was built
   with an AI coding assistant working under those rules, with the architecture checks as a safety
   net.
+
+## Known limitations and future improvements
+
+**Known limitations**
+
+- **PrimeNG 21 runs on Angular 22 through `overrides` in `package.json`.** That combination is not
+  officially supported. It works in the tests and in the browser for every component the app uses.
+  PrimeNG 22 would need a license key. The fallback would be Angular Material.
+- **The board has no paging.** It asks for up to 200 tasks at once and groups them in the client.
+  Beyond 200 tasks the board would need paging or a column-by-column load.
+- **Drag and drop has no keyboard or screen-reader way to reorder cards.** The status of a task can
+  still be changed in the edit dialog. Touch dragging (a card starts moving after a short press)
+  was not tried on a real touch device.
+- **A screen reader pass has not been done.** The accessibility checks are automated (axe-core and
+  Lighthouse).
+- **Mobile Lighthouse performance is 71 to 73 locally and 80 on the live site.** Desktop is 100
+  (see "Lighthouse").
+- **The initial bundle is about 666 kB**, over the 500 kB warning in `angular.json`. The build
+  warns and does not fail.
+- **The backend is a mock.** JSON Server 1.0 is a beta, there is no authentication, and the data
+  has no owner. In the live demo, changes last until the page is reloaded.
+- **Calendar, Team and Settings** appear in the sidebar as disabled items, as in the design.
+- **`injectTranslate()` exists twice** (`tasks/util` and `dashboard/util`), because two domains may
+  not import each other.
+
+**Future improvements**
+
+- A card menu with Move up, Move down and Move to column, which gives drag and drop a keyboard
+  alternative and helps touch screens.
+- Pre-render the app shell and drop the ICU library to lift the mobile score above 90.
+- End-to-end tests (for example Playwright) on top of the unit and architecture tests.
+- A real backend with authentication, so tasks belong to users, and server-side paging.
+- Move `injectTranslate()` into `shared` and remove the copy.
 
 ## More documentation
 
