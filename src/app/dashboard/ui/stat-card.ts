@@ -21,6 +21,24 @@ import { changeLabelKey, statTitleKey } from '../util/stat-text';
       background: var(--app-surface);
       border-radius: 0.75rem;
       box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+      transition:
+        transform 150ms ease,
+        box-shadow 150ms ease;
+    }
+
+    article:hover {
+      transform: translateY(-0.125rem);
+      box-shadow: 0 0.25rem 0.75rem rgb(0 0 0 / 0.12);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      article {
+        transition: none;
+      }
+
+      article:hover {
+        transform: none;
+      }
     }
 
     .title {

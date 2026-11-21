@@ -81,6 +81,13 @@ import { TaskCard } from './task-card';
       border-radius: 0.5rem;
       text-align: center;
       color: var(--app-text-muted);
+      animation: app-fade-in 300ms ease-out;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .empty {
+        animation: none;
+      }
     }
 
     .empty i {

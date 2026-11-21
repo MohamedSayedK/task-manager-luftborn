@@ -57,6 +57,32 @@ body {
     sans-serif;
 }
 
+// Subtle motion shared by the app. Components use these keyframes and switch them off for people
+// who ask for less motion.
+@keyframes app-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes app-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.375rem);
+  }
+}
+
+// A screen fades in when the route changes. It is the element the router places after its outlet.
+main > router-outlet ~ * {
+  animation: app-fade-in 200ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  main > router-outlet ~ * {
+    animation: none;
+  }
+}
+
 // Dragging a card (Angular CDK). The preview and the placeholder live outside the column, so
 // these styles are global.
 .cdk-drag-preview {

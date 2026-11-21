@@ -24,9 +24,13 @@ const PRIORITIES: Record<TaskPriority, { labelKey: string; severity: TagSeverity
   styles: `
     :host {
       display: block;
+      animation: app-rise-in 220ms ease-out;
     }
 
     article {
+      transition:
+        box-shadow 150ms ease,
+        border-color 150ms ease;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
@@ -34,6 +38,20 @@ const PRIORITIES: Record<TaskPriority, { labelKey: string; severity: TagSeverity
       background: var(--app-surface);
       border: 1px solid var(--app-border);
       border-radius: 0.5rem;
+    }
+
+    article:hover {
+      box-shadow: 0 0.125rem 0.5rem rgb(0 0 0 / 0.1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :host {
+        animation: none;
+      }
+
+      article {
+        transition: none;
+      }
     }
 
     article.overdue {

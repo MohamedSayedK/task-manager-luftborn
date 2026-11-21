@@ -40,9 +40,13 @@ const BELL_MESSAGES = ['header.bellFirst', 'header.bellSecond', 'header.bellThir
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { role: 'banner' },
   styles: `
+    // The height is fixed from the start. PrimeNG adds the styles of the search box a moment after
+    // the first paint, and a header that then grows would push the whole page down.
     :host {
       display: flex;
       align-items: center;
+      box-sizing: border-box;
+      min-height: 4rem;
       gap: 1rem;
       padding: 0.75rem 1.5rem;
       background: var(--app-surface);
@@ -99,6 +103,12 @@ const BELL_MESSAGES = ['header.bellFirst', 'header.bellSecond', 'header.bellThir
       background: transparent;
       color: var(--app-text-secondary);
       cursor: pointer;
+    }
+
+    .burger,
+    .language,
+    .bell {
+      transition: background-color 120ms ease;
     }
 
     .burger:hover {
@@ -223,6 +233,12 @@ const BELL_MESSAGES = ['header.bellFirst', 'header.bellSecond', 'header.bellThir
 
     // No motion for people who ask for less of it: the dot and a still glow remain.
     @media (prefers-reduced-motion: reduce) {
+      .burger,
+      .language,
+      .bell {
+        transition: none;
+      }
+
       .bell.attention,
       .bell.attention i {
         animation: none;

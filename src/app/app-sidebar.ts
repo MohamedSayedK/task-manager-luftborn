@@ -32,6 +32,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
       font-size: 0.9375rem;
       color: var(--app-text-secondary);
       text-decoration: none;
+      transition: background-color 120ms ease;
     }
 
     a:hover {
@@ -102,7 +103,8 @@ import { TranslocoPipe } from '@jsverse/transloco';
     }
 
     @media (prefers-reduced-motion: reduce) {
-      :host {
+      :host,
+      a {
         transition: none;
       }
     }
