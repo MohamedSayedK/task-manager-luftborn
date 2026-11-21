@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+# A newer run on the same branch makes the older one pointless.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # The same checks as `npm run ci`: module boundaries, architecture tests, ESLint, Prettier,
+  # unit tests with the 80% coverage threshold, and the production build.
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      # The `prepare` script installs the Husky git hooks, which a pipeline does not need.
+      HUSKY: '0'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+      - run: npm run ci
+
+      - name: Keep the coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage
+          if-no-files-found: ignore
+
+  # Builds both images and proves the stack answers: the app, and the API through the proxy.
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and start the stack
+        run: docker compose up --build --detach --wait
+
+      - name: Smoke test
+        run: |
+          curl --fail --silent --show-error http://localhost:8080/ | grep -q '<app-root'
+          curl --fail --silent --show-error 'http://localhost:8080/api/tasks?_page=1&_per_page=5' | grep -q '"data"'
+          curl --fail --silent --show-error http://localhost:8080/tasks | grep -q '<app-root'
+
+      - name: Show the logs when something failed
+        if: failure()
+        run: docker compose logs --no-color
+
+      - name: Stop the stack
+        if: always()
+        run: docker compose down --volumes
