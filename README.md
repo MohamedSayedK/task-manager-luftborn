@@ -34,6 +34,7 @@ delete, a dashboard with statistics, charts and an activity feed, and a mock RES
 | Forms        | Reactive Forms with custom validators                                      |
 | i18n         | Transloco 8 with its ICU plugin (English, Arabic, right-to-left)           |
 | Mock backend | JSON Server 1.0 beta                                                       |
+| Delivery     | Docker (nginx and JSON Server) with docker-compose, GitHub Actions         |
 | Tests        | Vitest through the Angular unit-test builder, jsdom, axe-core              |
 | Architecture | Sheriff (module boundaries) and tsarch (naming and dependency rules)       |
 | Code quality | ESLint (angular-eslint), Prettier, Husky with lint-staged                  |
@@ -62,6 +63,20 @@ JSON Server rewrites `mock-api/db.json` on every write. To reset the data with f
 ```bash
 npm run mock:generate
 ```
+
+### With Docker
+
+One command builds and starts everything, the app behind nginx and the mock backend:
+
+```bash
+docker compose up --build
+```
+
+Then open http://localhost:8080. The `web` image serves the production build and proxies `/api`
+to the `api` image (JSON Server), which waits until the API answers before the app starts. nginx
+compresses the files and lets browsers keep the content-hashed scripts and styles for a year. The
+data lives inside the `api` container, so it starts fresh whenever the container is created again.
+`docker compose down` stops it.
 
 ## Scripts
 
@@ -179,15 +194,41 @@ To add a language: add its code to `LANGUAGES` in `language.ts`, create a catalo
 
 - Every component uses `ChangeDetectionStrategy.OnPush`, `@for` blocks use `track`, and state is
   signals and `computed`.
-- Routes are lazy loaded. The initial bundle is about 678 kB (153 kB transferred), which is over
+- Routes are lazy loaded. The initial bundle is about 666 kB (161 kB transferred), which is over
   the 500 kB budget warning in `angular.json` (the build only warns). It was about 572 kB before
-  Transloco and its ICU plugin were added. The plugin's `@messageformat/core` is not an ES module,
-  which the build also warns about. The analytics screen, which carries Chart.js, is its own chunk (about 217 kB, 65 kB transferred).
+  Transloco and its ICU plugin were added. The plugin's `@messageformat/core` is a single 93 kB
+  file that is not an ES module (the build warns about that too). The analytics screen, which
+  carries Chart.js, is its own chunk (about 217 kB, 65 kB transferred).
+- **Start-up weight:** the PrimeNG theme contains only the design tokens of the components the app
+  uses (the full Aura preset carries about 90), English is part of the main bundle so the first
+  screen does not wait for a second request, and Arabic is a separate chunk.
+- **Layout shift:** the header has a fixed height, because PrimeNG adds the styles of the search
+  box a moment after the first paint and a header that then grows pushed the page down.
+- **Motion** is subtle (cards and screens fade in, hover lifts, color eases) and switched off for
+  people who prefer reduced motion.
 - GET responses are cached for 60 seconds, and writes invalidate only the collection they change.
   The board and the dashboard ask for the same task list, so the second request is free.
 - Search waits 300 ms after typing stops. `httpResource` cancels a request when a newer one
   replaces it.
-- Lighthouse has not been measured.
+
+### Lighthouse
+
+Measured with Lighthouse 13 in headless Chrome against the production build served by the Docker
+stack (nginx with compression), on the dashboard route, twice:
+
+| Profile                         | Performance | Accessibility | Best practices | SEO |
+| ------------------------------- | ----------- | ------------- | -------------- | --- |
+| Desktop                         | 100         | 100           | 100            | 100 |
+| Mobile (slow 4G, 4x slower CPU) | 72 to 73    | 100           | 100            | 100 |
+
+Desktop: first contentful paint 0.2 s, largest contentful paint 0.8 s, blocking time 20 ms,
+layout shift 0.003. On the mobile profile the largest contentful paint is about 3.8 s and the
+blocking time about 650 ms. They come from the weight of Angular, PrimeNG and the board (the
+analytics screen, which has no board, scores 83), not from one fixable problem: removing the
+per-card menu changed nothing, and without the entrance animations the score was lower. Getting
+mobile above 90 would take pre-rendering the shell, dropping the ICU library (about 93 kB) or
+rendering fewer cards at first. The first measurement had SEO at 82 (no meta description, no
+valid `robots.txt`) and a layout shift of 0.15 on desktop, both fixed.
 
 ## Accessibility
 
@@ -210,8 +251,12 @@ A screen reader pass has not been done.
   tests.
 - **Architecture tests** guard the dependency and naming rules.
 - **Accessibility tests** run axe on whole screens and open dialogs.
-- **Coverage** (`npm run test:coverage`, 323 tests): 98.4% statements, 97.7% branches, 97.4%
-  functions, 98.7% lines. The build fails below 80%. `app.config.ts` and `app.routes.ts` (pure
+- **Continuous integration:** a GitHub Actions workflow (`.github/workflows/ci.yml`) runs `npm run ci`
+  on every push and pull request (boundaries, architecture tests, ESLint, Prettier, unit tests with
+  the 80% threshold, production build), keeps the coverage report, and has a second job that
+  builds the Docker images, starts the stack and checks that the app and the API answer.
+- **Coverage** (`npm run test:coverage`, 326 tests): 98.8% statements, 98.2% branches, 98.5%
+  functions, 99.1% lines. The build fails below 80%. `app.config.ts` and `app.routes.ts` (pure
   configuration) and test helpers are excluded.
 
 ## Code quality
@@ -246,7 +291,6 @@ A screen reader pass has not been done.
   card to another column by keyboard means using the edit dialog. On touch screens a card starts
   to drag after a 250 ms press. It was tested with a mouse, not on a touch device. Cards that are
   moved get an `order` field that the generated data does not have.
-- **Not built:** Docker, a GitHub Actions pipeline, and a Lighthouse audit.
 - **The mock API** has no users or auth, and JSON Server 1.0 is a beta.
 
 ## More documentation
