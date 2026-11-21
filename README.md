@@ -1,0 +1,254 @@
+# Task Manager
+
+A task management dashboard built with Angular 22, signals and PrimeNG. It was written as the
+Senior Angular Developer assignment: a Kanban board with filters and search, create / edit /
+delete, a dashboard with statistics, charts and an activity feed, and a mock REST backend.
+
+## Features
+
+- **Kanban board** with three columns (To Do, In Progress, Done), task counts, overdue
+  highlighting, and overdue tasks listed first until you place cards by hand.
+- **Drag and drop:** drag a card to another column to change its status, or inside its column to
+  reorder it. The order is saved. An empty column shows a short "No tasks here" hint.
+- **Filters and search:** status tabs, priority and assignee dropdowns, and a debounced search over
+  title and description. All filters combine.
+- **Create, edit and delete** in a dialog (Reactive Forms with custom validators and a dynamic tags
+  list). Deleting asks for confirmation.
+- **Dashboard:** four statistic cards counted from the real tasks, two charts (tasks by priority
+  and by status) and a recent activity feed.
+- **App shell:** header with search, sidebar navigation, responsive down to phone width.
+- **Loading skeletons, error messages with retry**, and HTTP response caching.
+- **English and Arabic**, with right-to-left layout. A header button switches the language and the
+  choice is remembered.
+- **Accessibility:** no axe-core violations on any screen or open state (WCAG 2.1 AA), in English
+  and in Arabic.
+
+## Tech stack
+
+| Area         | Choice                                                                     |
+| ------------ | -------------------------------------------------------------------------- |
+| Framework    | Angular 22, standalone components, signals, `httpResource`, zoneless-ready |
+| UI           | PrimeNG 21 (Aura theme) with PrimeIcons, Chart.js through `p-chart`        |
+| Drag & drop  | Angular CDK drag-drop (already a PrimeNG peer dependency)                  |
+| State        | NgRx Signals and the NgRx Toolkit (`withResource`, `withMutations`)        |
+| Forms        | Reactive Forms with custom validators                                      |
+| i18n         | Transloco 8 with its ICU plugin (English, Arabic, right-to-left)           |
+| Mock backend | JSON Server 1.0 beta                                                       |
+| Tests        | Vitest through the Angular unit-test builder, jsdom, axe-core              |
+| Architecture | Sheriff (module boundaries) and tsarch (naming and dependency rules)       |
+| Code quality | ESLint (angular-eslint), Prettier, Husky with lint-staged                  |
+
+## Getting started
+
+**Prerequisites:** Node.js `^22.22.3`, `^24.15.0` or `>=26` (the Angular CLI 22 requirement) and
+npm.
+
+```bash
+npm install
+```
+
+Run the mock API and the app in two terminals:
+
+```bash
+npm run mock:api   # JSON Server on http://localhost:3000
+npm start          # Angular dev server on http://localhost:4200
+```
+
+The dev server proxies `/api/*` to port 3000 (`proxy.conf.json`), so the app calls relative URLs
+such as `/api/tasks`. There are no environment variables.
+
+JSON Server rewrites `mock-api/db.json` on every write. To reset the data with fresh dates:
+
+```bash
+npm run mock:generate
+```
+
+## Scripts
+
+| Script                  | What it does                                                           |
+| ----------------------- | ---------------------------------------------------------------------- |
+| `npm start`             | Dev server with the API proxy                                          |
+| `npm run mock:api`      | Mock REST API on port 3000                                             |
+| `npm run mock:generate` | Regenerate the mock data with fresh dates                              |
+| `npm test`              | Unit tests in watch mode                                               |
+| `npm run test:coverage` | Unit tests once, with coverage and the 80% threshold                   |
+| `npm run test:arch`     | Architecture tests (dependency and naming rules)                       |
+| `npm run sheriff`       | Module boundary check                                                  |
+| `npm run lint`          | ESLint (`lint:fix` applies fixes)                                      |
+| `npm run format`        | Prettier (`format:check` only checks)                                  |
+| `npm run build`         | Production build                                                       |
+| `npm run ci`            | Everything: Sheriff, arch tests, lint, format check, unit tests, build |
+
+A Husky pre-commit hook runs ESLint and Prettier on the staged files (lint-staged).
+
+## Architecture
+
+### Folders and domains
+
+```
+src/app/
+  tasks/       task board, filters, create / edit / delete
+  dashboard/   statistics cards, charts, activity feed
+  shared/      technical code used by more than one domain (HTTP cache)
+  app-*.ts, *-page.ts   shell, header, sidebar and the screens that compose the features
+```
+
+Each domain is split into layers: `feature-*` (smart components), `ui` (presentational
+components), `data` (stores, clients, types) and `util` (pure functions). The import direction is
+`feature → ui → data → util`, and a domain only sees itself and `shared`.
+
+Two tools enforce this in `npm run ci`:
+
+- **Sheriff** (`sheriff.config.ts`) checks domain and layer boundaries.
+- **tsarch tests** (`arch/`) check what Sheriff cannot express: no import cycles, only stores
+  use data clients, only smart components and coordinators use stores, stores never use other
+  stores, and presentational components never use smart ones.
+
+### State management
+
+- **Signal stores** (`@ngrx/signals`) each have one job: a search store (`TaskSearchStore`), a
+  detail and edit store (`TaskDetailStore`), or a lookup store. Reads use `httpResource` through
+  `withResource`, writes use `withMutations`.
+- **Clients** (`TaskClient`, `DashboardClient`, `ActivityClient`) are stateless. They only describe
+  requests, and only stores call them.
+- **Coordinator:** `DashboardCoordinator` combines two stores into the views the dashboard shows.
+  A store never depends on another store.
+- **Smart and dumb components:** smart components (`TaskSearch`, `TaskEdit`,
+  `StatisticsOverview`, ...) talk to stores. Dumb ones (`TaskCard`, `TaskColumn`, `TaskForm`,
+  `StatCardView`) only take inputs and emit outputs.
+
+### How features talk without importing each other
+
+- **The router is the contract between header and board.** The header search writes `?q=`, the
+  board reads it as an input. The sidebar "New Task" link uses `?newTask=true`.
+- **The board and the edit dialog** are separate features composed by `TasksPage`. They share
+  `TaskDetailStore`, which counts successful writes so the board knows when to reload.
+- **The dashboard keeps its own small view of tasks** (status, priority, due date), so the
+  `tasks` and `dashboard` domains never import each other. It reloads by itself after a task
+  write through a change counter in the shared HTTP cache.
+- **Activity log:** every successful create, update or delete records an entry in `/activity`.
+  A failed log never fails the task change.
+
+### Decisions
+
+| Decision                                                                                                 | Why                                                                                                                        |
+| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| PrimeNG **21**, not 22                                                                                   | PrimeNG 22 shows a red "Invalid PrimeUI License" banner without a license key. 21 is MIT.                                  |
+| `overrides` in `package.json` for PrimeNG's Angular peers                                                | PrimeNG 21 declares Angular 21 peers. It works on Angular 22 here, but it is an unsupported combination (see limitations). |
+| Board is Kanban without paging; one request for up to 200 tasks, grouped in the client                   | The design shows all tasks grouped by status with per-column counts.                                                       |
+| All filters and the search go into one `_where` JSON parameter                                           | JSON Server 1.0 beta ignores plain filter params once `_where` is present, and `q` and `_start` do not work.               |
+| Statistic cards are **counted from the tasks**                                                           | The static `/statistics` file (156 / 89 / 42 / 25) contradicts the board. Its icon, color and change text are still used.  |
+| Reactive Forms, never Signal Forms                                                                       | The assignment asks for Reactive Forms with custom validators and dynamic controls.                                        |
+| HTTP cache: GET responses for 60 s, a successful write clears that collection                            | Required caching, simple and safe. Errors are never cached.                                                                |
+| Overdue tasks first (until cards are placed by hand), disabled Calendar / Team / Settings, header search | Taken from the Figma, not from the assignment text.                                                                        |
+
+## Forms
+
+The task form validates the title (required, 3 to 100 characters), description (up to 500), due
+date (required, and not in the past for a new task through a custom validator) and assignee
+(required). Tags are a dynamic `FormArray` with add and remove. Errors show after the first
+submit or touch, with `role="alert"` and `aria-describedby`.
+
+## Internationalization
+
+The app speaks English and Arabic. Arabic is written right to left.
+
+- **Texts** live in typed catalogs, `src/app/i18n/en.ts` and `ar.ts`. `ar.ts` has the type of
+  `en.ts`, so a missing or extra key is a compile error. Plurals and values use the ICU message
+  format (the Transloco ICU plugin), which gives Arabic its six plural forms: "مهمتان" for two
+  tasks, "مهام" for three to ten.
+- **Templates** use the `transloco` pipe. Labels that are data (dropdown options, chart labels)
+  use a small `injectTranslate()` helper that translates again after a language change.
+  Utilities such as the due-date and activity text return a message key and its values, so they
+  stay free of any language.
+- **`Language`** (`src/app/i18n/language.ts`) starts with the saved choice, else the browser
+  language, else English. It sets `lang` and `dir` on `<html>` and tells Transloco. Each language is
+  its own lazy chunk, so a visitor only downloads the one in use.
+- **Also translated:** the browser tab title (`TranslatedTitleStrategy`), PrimeNG's own texts such
+  as "No results found" (`PrimeNgTranslation`), and every accessible name.
+- **Right to left** uses CSS logical properties (`margin-inline-start`, `border-inline-end`, ...),
+  so one stylesheet serves both directions. The mobile drawer slides in from the right.
+- **Not translated, by design:** the mock API's data (task titles, descriptions, tags, people).
+  They are data, not interface text.
+
+To add a language: add its code to `LANGUAGES` in `language.ts`, create a catalog typed as
+`Messages`, add it to `translation-loader.ts` and to `availableLangs` in `app.config.ts` and in
+`src/app/testing/translations.ts`.
+
+## Performance
+
+- Every component uses `ChangeDetectionStrategy.OnPush`, `@for` blocks use `track`, and state is
+  signals and `computed`.
+- Routes are lazy loaded. The initial bundle is about 678 kB (153 kB transferred), which is over
+  the 500 kB budget warning in `angular.json` (the build only warns). It was about 572 kB before
+  Transloco and its ICU plugin were added. The plugin's `@messageformat/core` is not an ES module,
+  which the build also warns about. The analytics screen, which carries Chart.js, is its own chunk (about 217 kB, 65 kB transferred).
+- GET responses are cached for 60 seconds, and writes invalidate only the collection they change.
+  The board and the dashboard ask for the same task list, so the second request is free.
+- Search waits 300 ms after typing stops. `httpResource` cancels a request when a newer one
+  replaces it.
+- Lighthouse has not been measured.
+
+## Accessibility
+
+axe-core 4.14 reports no violations on the Dashboard, Tasks and Analytics screens, nor on the card
+menu, filter dropdowns, create / edit dialog and delete confirmation, including color contrast.
+Dialogs close on Esc and return focus to the button that opened them. Charts come with a text
+legend that holds the same numbers. axe also runs inside the unit tests (everything except color
+contrast, which needs a real browser), on every screen in Arabic as well. In a real browser axe
+also found nothing in Arabic on the three screens, the select overlay, the card menu, the delete
+confirmation, the create dialog with errors and the open mobile drawer, in light and dark mode.
+A screen reader pass has not been done.
+
+## Testing strategy
+
+- **Test first.** New behavior was built red, green, refactor, one test at a time.
+- **Through the DOM, with HTTP as the only mock.** Component tests render the real component with
+  real stores and answer requests through `HttpTestingController`. They check what a user sees and
+  what is sent, not internals.
+- **Pure logic** (due dates, counting, validators, activity text, the HTTP cache) has direct unit
+  tests.
+- **Architecture tests** guard the dependency and naming rules.
+- **Accessibility tests** run axe on whole screens and open dialogs.
+- **Coverage** (`npm run test:coverage`, 323 tests): 98.4% statements, 97.7% branches, 97.4%
+  functions, 98.7% lines. The build fails below 80%. `app.config.ts` and `app.routes.ts` (pure
+  configuration) and test helpers are excluded.
+
+## Code quality
+
+- ESLint with angular-eslint (including template accessibility rules). The rules add OnPush on
+  every component and no `any`.
+- Prettier, with `npm run format:check` in `npm run ci`.
+- Husky and lint-staged run ESLint and Prettier on staged files before each commit.
+- `CLAUDE.md` and the two architecture documents in `docs/` hold the rules the code follows. The project was built
+  with an AI coding assistant working under those rules, with the architecture checks as a safety
+  net.
+
+## Known limitations and ideas
+
+- **PrimeNG 21 on Angular 22** is an unsupported combination held together by `overrides`. It works
+  in the app and in the tests today. The alternatives are a PrimeNG license key or another
+  component library.
+- **The board loads at most 200 tasks** in one request.
+- **Statistic change texts** ("+12 this week") are sample data. The app keeps no history to compute
+  them.
+- **The cache** can show data up to 60 seconds old if it changes outside the app. A manual
+  "refresh" button would need a way to skip the cache.
+- **The activity feed's "x ago"** is measured from when the feed was shown and does not tick.
+- **Dark mode** starts with the system setting and remembers the choice made with the header
+  button (`theme.ts`). The page has no inline script, so a dark system may show a light flash
+  while the app starts.
+- **Internationalization:** the select's trigger button keeps PrimeNG's fixed English label
+  "dropdown trigger", because it is written into PrimeNG's template. The native date input shows
+  its placeholder (for example `mm/dd/yyyy`) in the language of the browser, not of the page.
+  Numbers stay in Latin digits.
+- **Drag and drop** is pointer only: there is no keyboard way to reorder cards, and moving a
+  card to another column by keyboard means using the edit dialog. On touch screens a card starts
+  to drag after a 250 ms press. It was tested with a mouse, not on a touch device. Cards that are
+  moved get an `order` field that the generated data does not have.
+- **Not built:** Docker, a GitHub Actions pipeline, and a Lighthouse audit.
+- **The mock API** has no users or auth, and JSON Server 1.0 is a beta.
+
+## More documentation
+
+- `docs/architecture-boundaries.md` and `docs/architecture-state-management.md`: the rules.
