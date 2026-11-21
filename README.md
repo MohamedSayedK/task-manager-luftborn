@@ -52,11 +52,23 @@ Run the mock API and the app in two terminals:
 
 ```bash
 npm run mock:api   # JSON Server on http://localhost:3000
-npm start          # Angular dev server on http://localhost:4200
+npm start          # builds the app and serves it on http://localhost:4200
+```
+
+`npm start` serves the **production build** (`scripts/serve-dist.mjs`): files are compressed
+(Brotli or gzip), scripts and styles with a hash in their name are cached for a year, unknown
+routes fall back to the app, and `/api/*` is forwarded to the mock API. This is what a real host
+does, so what you see here, including a Lighthouse run, is what a deployment gives. To work on the
+code use the dev server instead, with source maps and live reload:
+
+```bash
+npm run start:dev  # Angular dev server on http://localhost:4200
 ```
 
 The dev server proxies `/api/*` to port 3000 (`proxy.conf.json`), so the app calls relative URLs
-such as `/api/tasks`. There are no environment variables.
+such as `/api/tasks`. There are no environment variables. Do not measure performance on the dev
+server: it sends the bundle unminified and uncompressed (3.5 MB instead of 650 kB), and Lighthouse
+scores it around 60 on desktop.
 
 JSON Server rewrites `mock-api/db.json` on every write. To reset the data with fresh dates:
 
@@ -82,7 +94,9 @@ data lives inside the `api` container, so it starts fresh whenever the container
 
 | Script                  | What it does                                                           |
 | ----------------------- | ---------------------------------------------------------------------- |
-| `npm start`             | Dev server with the API proxy                                          |
+| `npm start`             | Build, then serve the production build with the API proxy              |
+| `npm run serve`         | Serve the existing build again (without building)                      |
+| `npm run start:dev`     | Angular dev server with source maps and live reload                    |
 | `npm run mock:api`      | Mock REST API on port 3000                                             |
 | `npm run mock:generate` | Regenerate the mock data with fresh dates                              |
 | `npm test`              | Unit tests in watch mode                                               |
@@ -213,17 +227,17 @@ To add a language: add its code to `LANGUAGES` in `language.ts`, create a catalo
 
 ### Lighthouse
 
-Measured with Lighthouse 13 in headless Chrome against the production build served by the Docker
-stack (nginx with compression), on the dashboard route, twice:
+Measured with Lighthouse 13 in headless Chrome against `npm start` (and, with the same result,
+the Docker stack), on the dashboard route:
 
 | Profile                         | Performance | Accessibility | Best practices | SEO |
 | ------------------------------- | ----------- | ------------- | -------------- | --- |
 | Desktop                         | 100         | 100           | 100            | 100 |
-| Mobile (slow 4G, 4x slower CPU) | 72 to 73    | 100           | 100            | 100 |
+| Mobile (slow 4G, 4x slower CPU) | 71 to 73    | 100           | 100            | 100 |
 
-Desktop: first contentful paint 0.2 s, largest contentful paint 0.8 s, blocking time 20 ms,
-layout shift 0.003. On the mobile profile the largest contentful paint is about 3.8 s and the
-blocking time about 650 ms. They come from the weight of Angular, PrimeNG and the board (the
+Desktop: first contentful paint 0.2 s, largest contentful paint 0.8 s, blocking time 20 to 60 ms,
+layout shift 0.003. On the mobile profile the largest contentful paint is about 3.7 s and the
+blocking time about 650 to 760 ms. They come from the weight of Angular, PrimeNG and the board (the
 analytics screen, which has no board, scores 83), not from one fixable problem: removing the
 per-card menu changed nothing, and without the entrance animations the score was lower. Getting
 mobile above 90 would take pre-rendering the shell, dropping the ICU library (about 93 kB) or
