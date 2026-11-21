@@ -25,6 +25,7 @@ import textarea from '@primeuix/themes/aura/textarea';
 import toast from '@primeuix/themes/aura/toast';
 import togglebutton from '@primeuix/themes/aura/togglebutton';
 import { providePrimeNG } from 'primeng/config';
+import { apiBackend } from './api-backend';
 import { routes } from './app.routes';
 import { PrimeNgTranslation } from './i18n/primeng-translation';
 import { TranslationLoader } from './i18n/translation-loader';
@@ -140,7 +141,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withComponentInputBinding()),
     { provide: TitleStrategy, useExisting: TranslatedTitleStrategy },
-    provideHttpClient(withInterceptors([cacheInterceptor])),
+    provideHttpClient(withInterceptors([cacheInterceptor, ...apiBackend])),
     provideTransloco({
       config: {
         availableLangs: ['en', 'ar'],
