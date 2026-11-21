@@ -10,7 +10,20 @@ import { provideRouter, TitleStrategy, withComponentInputBinding } from '@angula
 import { provideTransloco } from '@jsverse/transloco';
 import { provideTranslocoMessageformat } from '@jsverse/transloco-messageformat';
 import { definePreset } from '@primeuix/themes';
-import Aura from '@primeuix/themes/aura';
+import avatar from '@primeuix/themes/aura/avatar';
+import base from '@primeuix/themes/aura/base';
+import button from '@primeuix/themes/aura/button';
+import dialog from '@primeuix/themes/aura/dialog';
+import iconfield from '@primeuix/themes/aura/iconfield';
+import inputtext from '@primeuix/themes/aura/inputtext';
+import menu from '@primeuix/themes/aura/menu';
+import select from '@primeuix/themes/aura/select';
+import selectbutton from '@primeuix/themes/aura/selectbutton';
+import skeleton from '@primeuix/themes/aura/skeleton';
+import tag from '@primeuix/themes/aura/tag';
+import textarea from '@primeuix/themes/aura/textarea';
+import toast from '@primeuix/themes/aura/toast';
+import togglebutton from '@primeuix/themes/aura/togglebutton';
 import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
 import { PrimeNgTranslation } from './i18n/primeng-translation';
@@ -24,6 +37,32 @@ import { TranslatedTitleStrategy } from './translated-title-strategy';
  * text) has a contrast of only 3.7:1 and red-500 about 3.8:1. Both need 4.5:1 (WCAG AA), which
  * blue-600 and red-700 give.
  */
+/**
+ * Aura, with the design tokens of only the PrimeNG components this app uses. The full Aura preset
+ * carries the tokens of about 90 components, which cost about 100 kB in the main bundle and work
+ * at start-up, because PrimeNG builds CSS variables for every component in the preset. A component
+ * added to the app needs its tokens added here, or it looks unstyled.
+ */
+const Aura = {
+  primitive: base.primitive,
+  semantic: base.semantic,
+  components: {
+    avatar,
+    button,
+    dialog,
+    iconfield,
+    inputtext,
+    menu,
+    select,
+    selectbutton,
+    skeleton,
+    tag,
+    textarea,
+    toast,
+    togglebutton,
+  },
+};
+
 const AppPreset = definePreset(Aura, {
   semantic: {
     // Aura's whole primary scale is emerald. The tints of a selected or hovered dropdown option
