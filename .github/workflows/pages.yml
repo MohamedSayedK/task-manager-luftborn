@@ -1,0 +1,66 @@
+name: Pages
+
+# Publishes the app on GitHub Pages. Pages hosts static files only, so this builds the `demo`
+# configuration, where the app answers its own /api requests inside the browser (see
+# src/app/api-backend.demo.ts). Data changes last until the page is reloaded.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  # The mock data has dates relative to the day it was generated ("due in 3 days"). A weekly
+  # build generates it again, so the demo does not drift into having everything overdue.
+  schedule:
+    - cron: '0 5 * * 1'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      HUSKY: '0'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Generate the mock data with fresh dates
+        run: npm run mock:generate
+
+      - name: Build the demo
+        run: npx ng build --configuration demo
+
+      # Pages answers an unknown path (a deep link such as /tasks) with 404.html. The app is a
+      # single page app, so that page must be the app itself.
+      - name: Add the 404 page
+        run: cp dist/task-manager/browser/index.html dist/task-manager/browser/404.html
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/task-manager/browser
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
