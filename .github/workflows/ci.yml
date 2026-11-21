@@ -33,6 +33,16 @@ jobs:
       - run: npm ci
       - run: npm run ci
 
+      # `npm start` serves the build that `npm run ci` just made. It must answer, compress, and
+      # fall back to the app for a route.
+      - name: Smoke test the static server
+        run: |
+          node scripts/serve-dist.mjs &
+          for i in $(seq 1 20); do curl --silent --fail http://localhost:4200/ > /dev/null && break; sleep 1; done
+          curl --silent --show-error --head -H 'Accept-Encoding: br' http://localhost:4200/ | grep -i 'content-encoding: br'
+          curl --silent --show-error --fail http://localhost:4200/tasks | grep -q '<app-root'
+          curl --silent --show-error --head http://localhost:4200/robots.txt | grep -i '200'
+
       - name: Keep the coverage report
         if: always()
         uses: actions/upload-artifact@v4
