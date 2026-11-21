@@ -306,33 +306,6 @@ A screen reader pass has not been done.
   with an AI coding assistant working under those rules, with the architecture checks as a safety
   net.
 
-## Known limitations and ideas
-
-- **PrimeNG 21 on Angular 22** is an unsupported combination held together by `overrides`. It works
-  in the app and in the tests today. The alternatives are a PrimeNG license key or another
-  component library.
-- **The board loads at most 200 tasks** in one request.
-- **Statistic change texts** ("+12 this week") are sample data. The app keeps no history to compute
-  them.
-- **The cache** can show data up to 60 seconds old if it changes outside the app. A manual
-  "refresh" button would need a way to skip the cache.
-- **The activity feed's "x ago"** is measured from when the feed was shown and does not tick.
-- **Dark mode** starts with the system setting and remembers the choice made with the header
-  button (`theme.ts`). The page has no inline script, so a dark system may show a light flash
-  while the app starts.
-- **Internationalization:** the select's trigger button keeps PrimeNG's fixed English label
-  "dropdown trigger", because it is written into PrimeNG's template. The native date input shows
-  its placeholder (for example `mm/dd/yyyy`) in the language of the browser, not of the page.
-  Numbers stay in Latin digits.
-- **Drag and drop** is pointer only: there is no keyboard way to reorder cards, and moving a
-  card to another column by keyboard means using the edit dialog. On touch screens a card starts
-  to drag after a 250 ms press. It was tested with a mouse, not on a touch device. Cards that are
-  moved get an `order` field that the generated data does not have.
-- **The mock API** has no users or auth, and JSON Server 1.0 is a beta.
-- **The live demo** keeps its data in the page, so nothing is shared between visitors and a reload
-  starts over. Pages sends every file with a short cache lifetime (10 minutes), so the hashed files are
-  checked again on a return visit instead of being kept for a year.
-
 ## More documentation
 
 - `docs/architecture-boundaries.md` and `docs/architecture-state-management.md`: the rules.
