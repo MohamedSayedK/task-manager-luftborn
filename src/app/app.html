@@ -1,0 +1,17 @@
+<app-header [menuOpen]="menuOpen()" (menuToggle)="menuOpen.set(!menuOpen())" />
+<div class="body">
+  <app-sidebar [open]="menuOpen()" />
+  @if (menuOpen()) {
+    <button
+      type="button"
+      class="backdrop"
+      tabindex="-1"
+      aria-hidden="true"
+      (click)="menuOpen.set(false)"
+    ></button>
+  }
+  <main>
+    <h1 class="sr-only">{{ heading() | transloco }}</h1>
+    <router-outlet />
+  </main>
+</div>
