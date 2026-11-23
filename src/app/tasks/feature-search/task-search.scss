@@ -1,0 +1,128 @@
+:host {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  align-items: start;
+  padding: 1.5rem;
+}
+
+.filters {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: var(--app-surface);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.08);
+}
+
+.error {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--app-error-border);
+  border-radius: 0.5rem;
+  background: var(--app-error-bg);
+  color: var(--app-error-text);
+}
+
+// The grey inactive tab text is a shade too light for 4.5:1 on the grey tab bar.
+p-selectbutton {
+  --p-togglebutton-color: var(--app-text-secondary);
+  --p-togglebutton-checked-background: var(--p-primary-color);
+  --p-togglebutton-checked-color: var(--p-primary-contrast-color);
+  --p-togglebutton-content-checked-background: var(--p-primary-color);
+}
+
+.new-task {
+  margin-inline-start: auto;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  :host {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 1rem;
+  }
+
+  // Tabs on their own row, then both dropdowns and the New Task button on one row.
+  .filters {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+  }
+
+  p-selectbutton {
+    grid-column: 1 / -1;
+  }
+
+  p-select {
+    width: 100%;
+  }
+
+  .new-task {
+    margin-inline-start: 0;
+  }
+}
+
+// On a phone the controls form a grid: tabs on one full row, the two dropdowns side by side
+// and the New Task button full width, which is also the only way to create a task there.
+@media (max-width: 600px) {
+  .filters {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+
+  p-selectbutton,
+  .new-task {
+    grid-column: 1 / -1;
+  }
+
+  p-selectbutton {
+    display: flex;
+    --p-togglebutton-padding: 0.5rem 0.25rem;
+  }
+
+  p-selectbutton ::ng-deep .p-togglebutton {
+    flex: 1 1 auto;
+    white-space: nowrap;
+  }
+
+  p-select {
+    width: 100%;
+    font-size: 0.875rem;
+    --p-select-padding-x: 0.625rem;
+    --p-select-dropdown-width: 2rem;
+  }
+
+  .new-task {
+    margin-inline-start: 0;
+  }
+
+  .new-task ::ng-deep .p-button {
+    width: 100%;
+  }
+}
+
+// The narrowest phones have no room for two dropdowns side by side.
+@media (max-width: 360px) {
+  .filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  p-selectbutton ::ng-deep .p-togglebutton {
+    font-size: 0.8125rem;
+  }
+}

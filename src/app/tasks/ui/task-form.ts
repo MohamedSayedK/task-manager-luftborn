@@ -51,42 +51,7 @@ const ERROR_KEYS: Record<string, Record<string, string>> = {
   selector: 'app-task-form',
   imports: [ReactiveFormsModule, TranslocoPipe, Button, InputText, Select, Textarea],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: `
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    small {
-      color: var(--app-error-text);
-    }
-
-    .field > span,
-    label {
-      font-size: 0.8125rem;
-      font-weight: 600;
-      color: var(--app-text-secondary);
-    }
-
-    .row {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1rem;
-    }
-
-    footer {
-      display: flex;
-      justify-content: flex-end;
-      gap: 0.5rem;
-    }
-  `,
+  styleUrl: './task-form.scss',
   templateUrl: './task-form.html',
 })
 export class TaskForm {

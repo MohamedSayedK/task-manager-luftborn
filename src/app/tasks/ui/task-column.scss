@@ -1,0 +1,101 @@
+:host {
+  display: block;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 0.75rem;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--app-border);
+}
+
+h2 {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--app-text-secondary);
+}
+
+.count {
+  min-width: 1.5rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  background: var(--app-border);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--app-text-secondary);
+}
+
+// Tall enough that an empty column is still a place to drop a card.
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 5rem;
+  border-radius: 0.5rem;
+}
+
+// Another column's card is being dragged: show where it can go.
+.cards.cdk-drop-list-receiving {
+  outline: 2px dashed var(--p-primary-color);
+  outline-offset: 0.25rem;
+}
+
+// An empty column says so, and stays a place to drop a card.
+.empty {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 1.5rem 1rem;
+  border: 1px dashed var(--app-border);
+  border-radius: 0.5rem;
+  text-align: center;
+  color: var(--app-text-muted);
+  animation: app-fade-in 300ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .empty {
+    animation: none;
+  }
+}
+
+.empty i {
+  margin-block-end: 0.25rem;
+  font-size: 1.5rem;
+}
+
+.empty p {
+  margin: 0;
+  font-size: 0.8125rem;
+}
+
+.empty-title {
+  font-weight: 600;
+  color: var(--app-text-secondary);
+}
+
+app-task-card {
+  cursor: grab;
+}
+
+app-task-card.cdk-drag-disabled {
+  cursor: default;
+}

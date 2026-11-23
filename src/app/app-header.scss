@@ -1,0 +1,275 @@
+// The height is fixed from the start. PrimeNG adds the styles of the search box a moment after
+// the first paint, and a header that then grows would push the whole page down.
+:host {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: 4rem;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--app-surface);
+  border-bottom: 1px solid var(--app-border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--app-brand-text);
+}
+
+.brand,
+.actions {
+  flex: 1;
+}
+
+.logo {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+  font-size: 1rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+p-iconfield {
+  width: min(26rem, 100%);
+}
+
+input {
+  width: 100%;
+}
+
+.burger {
+  display: none;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--app-text-secondary);
+  cursor: pointer;
+}
+
+.burger,
+.language,
+.bell {
+  transition: background-color 120ms ease;
+}
+
+.burger:hover {
+  background: var(--app-surface-hover);
+}
+
+.language {
+  height: 2.25rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--app-border);
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--app-text-secondary);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.language:hover {
+  background: var(--app-surface-hover);
+}
+
+.bell,
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--app-text-subtle);
+}
+
+.theme-toggle {
+  cursor: pointer;
+}
+
+// The bell is an Easter egg. Until it is clicked it asks for it: a red dot, a glow that
+// pulses, and a shake of the bell now and then.
+.bell {
+  position: relative;
+  // The glow ring sits behind the bell, inside the button.
+  isolation: isolate;
+  color: var(--app-brand-text);
+  cursor: pointer;
+}
+
+.bell:hover {
+  background: var(--app-surface-hover);
+}
+
+// The glow is a ring that grows and fades. Only transform and opacity change, so the browser
+// can animate it on the GPU. Animating a box-shadow cannot be composited.
+.bell.attention::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--p-primary-color) 45%, transparent);
+  animation: bell-glow 2.4s ease-out infinite;
+}
+
+.bell.attention i {
+  transform-origin: 50% 0;
+  animation: bell-shake 3.6s ease-in-out infinite;
+}
+
+.bell.attention::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 0.3rem;
+  inset-inline-end: 0.35rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--app-error-accent);
+  box-shadow: 0 0 0 2px var(--app-surface);
+}
+
+@keyframes bell-glow {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  70%,
+  to {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+}
+
+@keyframes bell-shake {
+  0%,
+  60%,
+  100% {
+    transform: rotate(0);
+  }
+  64% {
+    transform: rotate(16deg);
+  }
+  68% {
+    transform: rotate(-14deg);
+  }
+  72% {
+    transform: rotate(10deg);
+  }
+  76% {
+    transform: rotate(-8deg);
+  }
+  80% {
+    transform: rotate(4deg);
+  }
+  84% {
+    transform: rotate(0);
+  }
+}
+
+// The message of the bell appears below the header, not over its buttons. PrimeNG sets the
+// position inline, so only !important can move it. Under 800px the header has two rows when
+// there is a search box.
+p-toast {
+  top: 4.5rem !important;
+  // PrimeNG gives the toast a fixed 25rem, which a phone is narrower than.
+  max-width: calc(100vw - 2.5rem);
+}
+
+@media (max-width: 800px) {
+  p-toast {
+    top: 7.25rem !important;
+  }
+}
+
+// No motion for people who ask for less of it: the dot and a still glow remain.
+@media (prefers-reduced-motion: reduce) {
+  .burger,
+  .language,
+  .bell {
+    transition: none;
+  }
+
+  .bell.attention::before,
+  .bell.attention i {
+    animation: none;
+  }
+
+  .bell.attention::before {
+    display: none;
+  }
+
+  .bell.attention {
+    box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--p-primary-color) 30%, transparent);
+  }
+}
+
+p-avatar {
+  --p-avatar-background: var(--p-blue-700);
+  --p-avatar-color: #ffffff;
+  font-weight: 700;
+}
+
+@media (max-width: 800px) {
+  .burger {
+    display: grid;
+  }
+
+  .brand,
+  .actions {
+    flex: none;
+  }
+
+  // Screens without a search box (analytics) have nothing else to push these to the right.
+  .actions {
+    margin-inline-start: auto;
+  }
+
+  // The search box gets a row of its own below the menu button, logo and actions, instead of
+  // being squeezed between them.
+  :host {
+    flex-wrap: wrap;
+    row-gap: 0.75rem;
+  }
+
+  p-iconfield {
+    order: 1;
+    flex: 1 1 100%;
+    width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  // Burger, logo and the four actions must fit in one row at 320px, so the gaps shrink.
+  :host {
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .actions {
+    gap: 0.25rem;
+  }
+
+  .brand span:not(.logo) {
+    display: none;
+  }
+}

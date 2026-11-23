@@ -8,37 +8,7 @@ import { AnalyticsOverview } from './dashboard/feature-analytics/analytics-overv
   selector: 'app-analytics-page',
   imports: [TranslocoPipe, AnalyticsOverview, ActivityOverview],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: `
-    :host {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      padding: 1.5rem;
-    }
-
-    section {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      padding: 1.25rem;
-      background: var(--app-surface);
-      border: 1px solid var(--app-border);
-      border-radius: 0.75rem;
-    }
-
-    h2 {
-      margin: 0;
-      font-size: 0.9375rem;
-      font-weight: 700;
-      color: var(--app-text);
-    }
-
-    @media (max-width: 560px) {
-      :host {
-        padding: 1rem;
-      }
-    }
-  `,
+  styleUrl: './analytics-page.scss',
   templateUrl: './analytics-page.html',
 })
 export class AnalyticsPage {}
