@@ -5,7 +5,7 @@ import { signalStore, withMethods } from '@ngrx/signals';
 import { Statistic } from './dashboard';
 import { DashboardClient } from './dashboard-client';
 
-/** The statistic card definitions (title, icon, color, change text) from `/statistics`. */
+/** The statistic card definitions (title, icon, color) from `/statistics`. */
 export const StatisticsStore = signalStore(
   { providedIn: 'root' },
   withResource(

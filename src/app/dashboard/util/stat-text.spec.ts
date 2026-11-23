@@ -1,4 +1,4 @@
-import { changeLabelKey, statTitleKey } from './stat-text';
+import { statTitleKey } from './stat-text';
 
 describe('statTitleKey', () => {
   it.each([
@@ -12,19 +12,5 @@ describe('statTitleKey', () => {
 
   it('has no key for a statistic it does not know', () => {
     expect(statTitleKey('stat-999')).toBeUndefined();
-  });
-});
-
-describe('changeLabelKey', () => {
-  it.each([
-    ['this week', 'dashboard.changes.thisWeek'],
-    ['today', 'dashboard.changes.today'],
-    ['Same as yesterday', 'dashboard.changes.sameAsYesterday'],
-  ])('maps the text "%s" to %s', (text, key) => {
-    expect(changeLabelKey(text)).toBe(key);
-  });
-
-  it('has no key for a text it does not know', () => {
-    expect(changeLabelKey('since Monday')).toBeUndefined();
   });
 });

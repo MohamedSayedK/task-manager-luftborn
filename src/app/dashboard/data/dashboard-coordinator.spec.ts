@@ -11,9 +11,6 @@ const statistic = (id: string, title: string, overrides: Partial<Statistic> = {}
   title,
   icon: '📊',
   value: 999,
-  change: '+12',
-  changeLabel: 'this week',
-  changeType: 'positive',
   color: '#1976D2',
   ...overrides,
 });
@@ -21,8 +18,8 @@ const statistic = (id: string, title: string, overrides: Partial<Statistic> = {}
 const STATISTICS = [
   statistic('stat-001', 'Total Tasks'),
   statistic('stat-002', 'Completed', { color: '#388E3C' }),
-  statistic('stat-003', 'In Progress', { changeType: 'neutral', change: '0' }),
-  statistic('stat-004', 'To Do', { changeType: 'neutral', color: '#7B1FA2' }),
+  statistic('stat-003', 'In Progress'),
+  statistic('stat-004', 'To Do', { color: '#7B1FA2' }),
 ];
 
 const task = (overrides: Partial<TaskSummary>): TaskSummary => ({
@@ -75,9 +72,6 @@ describe('DashboardCoordinator', () => {
     expect(todo).toMatchObject({
       icon: '📊',
       color: '#7B1FA2',
-      change: '+12',
-      changeLabel: 'this week',
-      changeType: 'neutral',
     });
   });
 

@@ -53,16 +53,3 @@ h3 {
   line-height: 1.2;
   color: var(--app-text);
 }
-
-.change {
-  font-size: 0.75rem;
-  color: var(--app-text-muted);
-}
-
-.change.positive {
-  color: var(--app-positive-text);
-}
-
-.change.negative {
-  color: var(--app-error-text);
-}

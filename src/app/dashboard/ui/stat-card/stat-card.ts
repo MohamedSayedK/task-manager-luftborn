@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { StatCard } from '../../data/dashboard-coordinator';
-import { changeLabelKey, statTitleKey } from '../../util/stat-text';
+import { statTitleKey } from '../../util/stat-text';
 
-/** One statistic: icon, title, value and the change text. */
+/** One statistic: icon, title and value. */
 @Component({
   selector: 'app-stat-card',
   imports: [TranslocoPipe],
@@ -14,7 +14,6 @@ import { changeLabelKey, statTitleKey } from '../../util/stat-text';
 export class StatCardView {
   readonly card = input.required<StatCard>();
 
-  /** The title and the change text come from the API in English. Known ones are translated. */
+  /** The title comes from the API in English. A known one is translated. */
   protected readonly titleKey = computed(() => statTitleKey(this.card().id));
-  protected readonly changeKey = computed(() => changeLabelKey(this.card().changeLabel));
 }

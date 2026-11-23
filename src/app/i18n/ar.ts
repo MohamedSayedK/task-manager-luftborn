@@ -111,11 +111,6 @@ export const ar: Messages = {
       inProgress: 'قيد التنفيذ',
       todo: 'للتنفيذ',
     },
-    changes: {
-      thisWeek: 'هذا الأسبوع',
-      today: 'اليوم',
-      sameAsYesterday: 'كما كان بالأمس',
-    },
   },
   analytics: {
     loadError: 'تعذر تحميل الرسوم البيانية.',

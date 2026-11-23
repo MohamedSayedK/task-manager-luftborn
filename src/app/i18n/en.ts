@@ -110,11 +110,6 @@ export const en = {
       inProgress: 'In Progress',
       todo: 'To Do',
     },
-    changes: {
-      thisWeek: 'this week',
-      today: 'today',
-      sameAsYesterday: 'Same as yesterday',
-    },
   },
   analytics: {
     loadError: 'Could not load the charts.',

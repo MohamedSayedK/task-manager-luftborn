@@ -25,9 +25,6 @@ describe('DashboardPage', () => {
         title: 'Total Tasks',
         icon: '📊',
         value: 1,
-        change: '+1',
-        changeLabel: 'this week',
-        changeType: 'positive',
         color: '#1976D2',
       },
     ]);

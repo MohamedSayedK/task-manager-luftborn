@@ -1,6 +1,6 @@
 import { computed, inject, Injectable } from '@angular/core';
 import { countByPriority, countByStatus, countTasks, TaskCounts } from '../util/task-metrics';
-import { ChangeType, Statistic } from './dashboard';
+import { Statistic } from './dashboard';
 import { StatisticsStore } from './statistics-store';
 import { TaskSummaryStore } from './task-summary-store';
 
@@ -11,9 +11,6 @@ export interface StatCard {
   icon: string;
   color: string;
   value: number;
-  change: string;
-  changeLabel: string;
-  changeType: ChangeType;
 }
 
 /** Which count each statistic card shows, by statistic id. */

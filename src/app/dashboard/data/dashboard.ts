@@ -1,17 +1,12 @@
 import { TaskSummary } from '../util/task-metrics';
 
-export type ChangeType = 'positive' | 'negative' | 'neutral';
-
-/** A statistic card definition from `/statistics`. Only its look and change text are used. */
+/** A statistic card definition from `/statistics`. Only its title, icon and color are used. */
 export interface Statistic {
   id: string;
   title: string;
   icon: string;
   /** Static sample value. The cards show counts from the real tasks instead. */
   value: number;
-  change: string;
-  changeLabel: string;
-  changeType: ChangeType;
   color: string;
 }
 
