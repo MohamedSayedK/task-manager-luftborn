@@ -109,7 +109,7 @@ export const ar: Messages = {
       total: 'إجمالي المهام',
       completed: 'المكتملة',
       inProgress: 'قيد التنفيذ',
-      overdue: 'المتأخرة',
+      todo: 'للتنفيذ',
     },
     changes: {
       thisWeek: 'هذا الأسبوع',

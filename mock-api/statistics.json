@@ -32,13 +32,13 @@
     },
     {
       "id": "stat-004",
-      "title": "Overdue",
-      "icon": "⚠️",
-      "value": 25,
-      "change": "+3",
-      "changeLabel": "today",
-      "changeType": "negative",
-      "color": "#D32F2F"
+      "title": "To Do",
+      "icon": "📝",
+      "value": 24,
+      "change": "+4",
+      "changeLabel": "this week",
+      "changeType": "neutral",
+      "color": "#7B1FA2"
     }
   ],
   "lastUpdated": "2026-11-21T13:47:01.418Z"

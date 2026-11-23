@@ -108,7 +108,7 @@ export const en = {
       total: 'Total Tasks',
       completed: 'Completed',
       inProgress: 'In Progress',
-      overdue: 'Overdue',
+      todo: 'To Do',
     },
     changes: {
       thisWeek: 'this week',

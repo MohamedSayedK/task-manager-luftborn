@@ -8,18 +8,18 @@ export interface TaskSummary {
 
 export interface TaskCounts {
   total: number;
-  completed: number;
+  todo: number;
   inProgress: number;
-  overdue: number;
+  completed: number;
 }
 
-/** Counts for the statistic cards. A task is overdue when it is not done and due before `today`. */
-export function countTasks(tasks: TaskSummary[], today: string): TaskCounts {
+/** Counts for the statistic cards. They match the three board columns and the total. */
+export function countTasks(tasks: TaskSummary[]): TaskCounts {
   return {
     total: tasks.length,
-    completed: tasks.filter((task) => task.status === 'done').length,
+    todo: tasks.filter((task) => task.status === 'todo').length,
     inProgress: tasks.filter((task) => task.status === 'in_progress').length,
-    overdue: tasks.filter((task) => task.status !== 'done' && task.dueDate < today).length,
+    completed: tasks.filter((task) => task.status === 'done').length,
   };
 }
 

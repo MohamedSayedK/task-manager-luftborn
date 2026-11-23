@@ -1,6 +1,5 @@
 import { countByPriority, countByStatus, countTasks, TaskSummary } from './task-metrics';
 
-const today = '2026-11-21';
 const summary = (overrides: Partial<TaskSummary>): TaskSummary => ({
   status: 'todo',
   priority: 'medium',
@@ -9,30 +8,21 @@ const summary = (overrides: Partial<TaskSummary>): TaskSummary => ({
 });
 
 describe('countTasks', () => {
-  it('counts all, completed, in progress and overdue tasks', () => {
+  it('counts all, to do, in progress and completed tasks', () => {
     const tasks = [
-      summary({ status: 'todo', dueDate: '2026-11-01' }),
-      summary({ status: 'in_progress', dueDate: '2026-11-02' }),
-      summary({ status: 'in_progress' }),
-      summary({ status: 'done', dueDate: '2026-10-01' }),
-      summary({ status: 'done' }),
       summary({ status: 'todo' }),
+      summary({ status: 'todo', dueDate: '2026-11-01' }),
+      summary({ status: 'in_progress' }),
+      summary({ status: 'in_progress' }),
+      summary({ status: 'done' }),
+      summary({ status: 'done', dueDate: '2026-10-01' }),
     ];
 
-    expect(countTasks(tasks, today)).toEqual({
-      total: 6,
-      completed: 2,
-      inProgress: 2,
-      overdue: 2,
-    });
+    expect(countTasks(tasks)).toEqual({ total: 6, todo: 2, inProgress: 2, completed: 2 });
   });
 
   it('counts nothing for no tasks', () => {
-    expect(countTasks([], today)).toEqual({ total: 0, completed: 0, inProgress: 0, overdue: 0 });
-  });
-
-  it('counts a task due today as not overdue', () => {
-    expect(countTasks([summary({ dueDate: today })], today).overdue).toBe(0);
+    expect(countTasks([])).toEqual({ total: 0, todo: 0, inProgress: 0, completed: 0 });
   });
 });
 

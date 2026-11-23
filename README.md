@@ -18,8 +18,9 @@ browser (see "The live demo" below). Changes you make last until you reload the 
   title and description. All filters combine.
 - **Create, edit and delete** in a dialog (Reactive Forms with custom validators and a dynamic tags
   list). Deleting asks for confirmation.
-- **Dashboard:** four statistic cards counted from the real tasks, two charts (tasks by priority
-  and by status) and a recent activity feed.
+- **Dashboard:** four statistic cards (Total, Completed, In Progress, To Do) counted from the real
+  tasks, so they match the board columns, two charts (tasks by priority and by status) and a recent
+  activity feed.
 - **App shell:** header with search, sidebar navigation, responsive down to phone width.
 - **Loading skeletons, error messages with retry**, and HTTP response caching.
 - **English and Arabic**, with right-to-left layout. A header button switches the language and the
@@ -213,16 +214,16 @@ Two tools enforce this in `npm run ci`:
 
 ### Decisions
 
-| Decision                                                                                                 | Why                                                                                                                        |
-| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| PrimeNG **21**, not 22                                                                                   | PrimeNG 22 shows a red "Invalid PrimeUI License" banner without a license key. 21 is MIT.                                  |
-| `overrides` in `package.json` for PrimeNG's Angular peers                                                | PrimeNG 21 declares Angular 21 peers. It works on Angular 22 here, but it is an unsupported combination (see limitations). |
-| Board is Kanban without paging; one request for up to 200 tasks, grouped in the client                   | The design shows all tasks grouped by status with per-column counts.                                                       |
-| All filters and the search go into one `_where` JSON parameter                                           | JSON Server 1.0 beta ignores plain filter params once `_where` is present, and `q` and `_start` do not work.               |
-| Statistic cards are **counted from the tasks**                                                           | The static `/statistics` file (156 / 89 / 42 / 25) contradicts the board. Its icon, color and change text are still used.  |
-| Reactive Forms, never Signal Forms                                                                       | The assignment asks for Reactive Forms with custom validators and dynamic controls.                                        |
-| HTTP cache: GET responses for 60 s, a successful write clears that collection                            | Required caching, simple and safe. Errors are never cached.                                                                |
-| Overdue tasks first (until cards are placed by hand), disabled Calendar / Team / Settings, header search | Taken from the Figma, not from the assignment text.                                                                        |
+| Decision                                                                                                 | Why                                                                                                                                                                                       |
+| -------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| PrimeNG **21**, not 22                                                                                   | PrimeNG 22 shows a red "Invalid PrimeUI License" banner without a license key. 21 is MIT.                                                                                                 |
+| `overrides` in `package.json` for PrimeNG's Angular peers                                                | PrimeNG 21 declares Angular 21 peers. It works on Angular 22 here, but it is an unsupported combination (see limitations).                                                                |
+| Board is Kanban without paging; one request for up to 200 tasks, grouped in the client                   | The design shows all tasks grouped by status with per-column counts.                                                                                                                      |
+| All filters and the search go into one `_where` JSON parameter                                           | JSON Server 1.0 beta ignores plain filter params once `_where` is present, and `q` and `_start` do not work.                                                                              |
+| Statistic cards are **counted from the tasks**                                                           | The static `/statistics` file (156 / 89 / 42 / 24) contradicts the board. Its icon, color and change text are still used. The fourth card is To Do, so the cards match the three columns. |
+| Reactive Forms, never Signal Forms                                                                       | The assignment asks for Reactive Forms with custom validators and dynamic controls.                                                                                                       |
+| HTTP cache: GET responses for 60 s, a successful write clears that collection                            | Required caching, simple and safe. Errors are never cached.                                                                                                                               |
+| Overdue tasks first (until cards are placed by hand), disabled Calendar / Team / Settings, header search | Taken from the Figma, not from the assignment text.                                                                                                                                       |
 
 ## Forms
 
@@ -327,7 +328,7 @@ A screen reader pass has not been done.
   report, and has a second job that builds the Docker images, starts the stack and checks that the
   app and the API answer. Its first run on GitHub found a real test-isolation bug (a test that
   switched to Arabic leaked the choice through `localStorage` on Node 24 only), now fixed.
-- **Coverage** (`npm run test:coverage`, 349 tests): 97.8% statements, 95.0% branches, 98.5%
+- **Coverage** (`npm run test:coverage`, 348 tests): 97.8% statements, 95.0% branches, 98.5%
   functions, 97.6% lines. The build fails below 80%. `app.config.ts` and `app.routes.ts` (pure
   configuration) and test helpers are excluded.
 

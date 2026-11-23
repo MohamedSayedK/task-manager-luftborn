@@ -25,7 +25,7 @@ const STATISTICS = [
     changeLabel: 'Same as yesterday',
     changeType: 'neutral',
   }),
-  statistic('stat-004', 'Overdue', { change: '+3', changeLabel: 'today', changeType: 'negative' }),
+  statistic('stat-004', 'To Do', { change: '+2', changeType: 'neutral' }),
 ];
 
 const task = (overrides: Partial<TaskSummary>): TaskSummary => ({
@@ -75,8 +75,8 @@ describe('StatisticsOverview', () => {
     expect(card(root, 'Completed')?.textContent).toContain('2');
     expect(card(root, 'In Progress')?.textContent).toContain('1');
     expect(card(root, 'In Progress')?.textContent).toContain('Same as yesterday');
-    expect(card(root, 'Overdue')?.textContent).toContain('1');
-    expect(card(root, 'Overdue')?.textContent).toContain('+3 today');
+    expect(card(root, 'To Do')?.textContent).toContain('1');
+    expect(card(root, 'To Do')?.textContent).toContain('+2 this week');
   });
 
   describe('in Arabic', () => {
@@ -88,7 +88,7 @@ describe('StatisticsOverview', () => {
       expect(card(root, 'إجمالي المهام')?.textContent).toContain('+12 هذا الأسبوع');
       expect(card(root, 'المكتملة')?.textContent).toContain('+8 اليوم');
       expect(card(root, 'قيد التنفيذ')?.textContent).toContain('كما كان بالأمس');
-      expect(card(root, 'المتأخرة')?.textContent).toContain('+3 اليوم');
+      expect(card(root, 'للتنفيذ')?.textContent).toContain('+2 هذا الأسبوع');
       expect(card(root, 'إجمالي المهام')?.querySelector('h3')?.textContent?.trim()).toBe(
         'إجمالي المهام',
       );

@@ -22,7 +22,7 @@ const STATISTICS = [
   statistic('stat-001', 'Total Tasks'),
   statistic('stat-002', 'Completed', { color: '#388E3C' }),
   statistic('stat-003', 'In Progress', { changeType: 'neutral', change: '0' }),
-  statistic('stat-004', 'Overdue', { changeType: 'negative', color: '#D32F2F' }),
+  statistic('stat-004', 'To Do', { changeType: 'neutral', color: '#7B1FA2' }),
 ];
 
 const task = (overrides: Partial<TaskSummary>): TaskSummary => ({
@@ -59,7 +59,7 @@ describe('DashboardCoordinator', () => {
 
   it('shows counts of the real tasks on cards that keep the look of the statistics', async () => {
     await load([
-      task({ status: 'todo', dueDate: '2020-01-01' }),
+      task({ status: 'todo' }),
       task({ status: 'in_progress' }),
       task({ status: 'done' }),
       task({ status: 'done' }),
@@ -69,15 +69,15 @@ describe('DashboardCoordinator', () => {
       ['Total Tasks', 4],
       ['Completed', 2],
       ['In Progress', 1],
-      ['Overdue', 1],
+      ['To Do', 1],
     ]);
-    const overdue = coordinator.cards()[3];
-    expect(overdue).toMatchObject({
+    const todo = coordinator.cards()[3];
+    expect(todo).toMatchObject({
       icon: '📊',
-      color: '#D32F2F',
+      color: '#7B1FA2',
       change: '+12',
       changeLabel: 'this week',
-      changeType: 'negative',
+      changeType: 'neutral',
     });
   });
 

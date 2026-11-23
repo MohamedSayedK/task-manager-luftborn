@@ -21,7 +21,7 @@ const COUNT_BY_ID: Record<string, keyof TaskCounts> = {
   'stat-001': 'total',
   'stat-002': 'completed',
   'stat-003': 'inProgress',
-  'stat-004': 'overdue',
+  'stat-004': 'todo',
 };
 
 /** Combines the statistics and task stores into the views the dashboard shows. */
@@ -30,11 +30,8 @@ export class DashboardCoordinator {
   private readonly statistics = inject(StatisticsStore);
   private readonly tasks = inject(TaskSummaryStore);
 
-  /** Today's local date as `YYYY-MM-DD` (the `en-CA` locale formats dates that way). */
-  private readonly today = new Date().toLocaleDateString('en-CA');
-
   readonly cards = computed(() =>
-    toCards(this.statistics.statisticsValue(), countTasks(this.tasks.tasks(), this.today)),
+    toCards(this.statistics.statisticsValue(), countTasks(this.tasks.tasks())),
   );
   readonly statusDistribution = computed(() => countByStatus(this.tasks.tasks()));
   readonly priorityDistribution = computed(() => countByPriority(this.tasks.tasks()));
