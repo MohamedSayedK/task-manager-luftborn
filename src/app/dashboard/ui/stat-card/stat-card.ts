@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { StatCard } from '../data/dashboard-coordinator';
-import { changeLabelKey, statTitleKey } from '../util/stat-text';
+import { StatCard } from '../../data/dashboard-coordinator';
+import { changeLabelKey, statTitleKey } from '../../util/stat-text';
 
 /** One statistic: icon, title, value and the change text. */
 @Component({

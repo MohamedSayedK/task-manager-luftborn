@@ -4,7 +4,7 @@ import { Component, input } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { TranslocoService } from '@jsverse/transloco';
 import { UIChart } from 'primeng/chart';
-import { AnalyticsOverview } from './dashboard/feature-analytics/analytics-overview';
+import { AnalyticsOverview } from '../../dashboard/feature-analytics/analytics-overview/analytics-overview';
 import { AnalyticsPage } from './analytics-page';
 
 /** jsdom has no canvas, so the chart component is replaced. */

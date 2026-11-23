@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslocoService } from '@jsverse/transloco';
-import { Assignee, Task, TaskDraft } from '../data/task';
+import { Assignee, Task, TaskDraft } from '../../data/task';
 import { TaskForm } from './task-form';
 
 const JOHN: Assignee = {

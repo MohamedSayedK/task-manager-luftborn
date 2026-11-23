@@ -14,9 +14,9 @@ import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { Textarea } from 'primeng/textarea';
-import { Assignee, Task, TaskDraft, TaskPriority, TaskStatus } from '../data/task';
-import { injectTranslate } from '../util/inject-translate';
-import { dueDateNotInPast } from '../util/task-validators';
+import { Assignee, Task, TaskDraft, TaskPriority, TaskStatus } from '../../data/task';
+import { injectTranslate } from '../../util/inject-translate';
+import { dueDateNotInPast } from '../../util/task-validators';
 
 /** Labels are message keys, translated when the options are built. */
 const PRIORITIES: { labelKey: string; value: TaskPriority }[] = [

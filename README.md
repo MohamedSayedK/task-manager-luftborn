@@ -153,12 +153,27 @@ src/app/
   tasks/       task board, filters, create / edit / delete
   dashboard/   statistics cards, charts, activity feed
   shared/      technical code used by more than one domain (HTTP cache)
-  app-*.ts, *-page.ts   shell, header, sidebar and the screens that compose the features
+  shell/       header and sidebar
+  pages/       the screens that compose the features
+  app.ts       root component, with app.config.ts and app.routes.ts
 ```
 
 Each domain is split into layers: `feature-*` (smart components), `ui` (presentational
 components), `data` (stores, clients, types) and `util` (pure functions). The import direction is
 `feature → ui → data → util`, and a domain only sees itself and `shared`.
+
+Every component has a folder of its own, named after it, with its class, template, styles and spec
+side by side:
+
+```
+tasks/ui/task-card/
+  task-card.ts
+  task-card.html
+  task-card.scss
+```
+
+A store that only one smart component uses sits in that component's folder
+(`tasks/feature-search/task-search/task-search-store.ts`).
 
 Two tools enforce this in `npm run ci`:
 

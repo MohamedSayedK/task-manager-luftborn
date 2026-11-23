@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { ActivityOverview } from './dashboard/feature-activity/activity-overview';
-import { AnalyticsOverview } from './dashboard/feature-analytics/analytics-overview';
+import { ActivityOverview } from '../../dashboard/feature-activity/activity-overview/activity-overview';
+import { AnalyticsOverview } from '../../dashboard/feature-analytics/analytics-overview/analytics-overview';
 
 /** The analytics screen: charts by priority and status, and the recent activity feed. */
 @Component({

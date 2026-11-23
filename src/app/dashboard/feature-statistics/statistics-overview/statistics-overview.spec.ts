@@ -2,7 +2,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslocoService } from '@jsverse/transloco';
-import { Statistic, TaskSummary } from '../data/dashboard';
+import { Statistic, TaskSummary } from '../../data/dashboard';
 import { StatisticsOverview } from './statistics-overview';
 
 const statistic = (id: string, title: string, overrides: Partial<Statistic> = {}): Statistic => ({

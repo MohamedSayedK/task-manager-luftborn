@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Button } from 'primeng/button';
-import { ActivityStore } from '../data/activity-store';
+import { ActivityStore } from '../../data/activity-store';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { describeActivity, Label, timeAgo } from '../util/activity-text';
+import { describeActivity, Label, timeAgo } from '../../util/activity-text';
 
 /** The recent activity feed: the latest task changes, newest first. */
 @Component({

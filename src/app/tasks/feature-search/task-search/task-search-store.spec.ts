@@ -2,7 +2,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ApplicationRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { Paginated, Task } from '../data/task';
+import { Paginated, Task } from '../../data/task';
 import { TaskSearchStore } from './task-search-store';
 
 const task = (overrides: Partial<Task>): Task => ({

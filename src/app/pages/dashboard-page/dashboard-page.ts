@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { StatisticsOverview } from './dashboard/feature-statistics/statistics-overview';
-import { TasksPage } from './tasks-page';
+import { StatisticsOverview } from '../../dashboard/feature-statistics/statistics-overview/statistics-overview';
+import { TasksPage } from '../tasks-page/tasks-page';
 
 /** The home screen: the statistic cards above the task board, as in the design. */
 @Component({

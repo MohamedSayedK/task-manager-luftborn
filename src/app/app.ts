@@ -3,8 +3,8 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRouteSnapshot, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { filter, map, startWith } from 'rxjs';
-import { AppHeader } from './app-header';
-import { AppSidebar } from './app-sidebar';
+import { AppHeader } from './shell/app-header/app-header';
+import { AppSidebar } from './shell/app-sidebar/app-sidebar';
 
 @Component({
   imports: [RouterOutlet, TranslocoPipe, AppHeader, AppSidebar],

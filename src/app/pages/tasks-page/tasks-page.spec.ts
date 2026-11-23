@@ -3,7 +3,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, provideRouter, withComponentInputBinding } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
-import { Assignee, Paginated, Task } from './tasks/data/task';
+import { Assignee, Paginated, Task } from '../../tasks/data/task';
 import { TasksPage } from './tasks-page';
 
 const SARAH: Assignee = {

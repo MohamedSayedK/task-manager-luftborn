@@ -14,6 +14,11 @@ developers are required to adhere to these rules whenever they modify applicatio
 ## Domains and Folder Structure
 
 - Layout: `src/app/<domain>/<layer>`, where `<layer>` is `feature-<name>`, `ui`, `data` or `util`.
+- Every component lives in a folder named after it, inside its layer folder
+  (e.g., `tasks/ui/task-card/`), together with its template (`.html`), styles (`.scss`) and spec.
+  A store used by one smart component only sits in that component's folder.
+  Root components go to `src/app/shell/<name>/` (header, sidebar) or `src/app/pages/<name>/`
+  (screens); `app.ts` stays in `src/app`.
 - Domains:
   - `tasks`: task CRUD, search, filtering, drag and drop, assignee lookup.
   - `dashboard`: statistics cards, analytics charts, recent activity feed.

@@ -2,8 +2,8 @@ import { withDevtools, withResource } from '@angular-architects/ngrx-toolkit';
 import { httpResource } from '@angular/common/http';
 import { computed, inject } from '@angular/core';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
-import { Paginated, Task, TaskPriority, TaskStatus } from '../data/task';
-import { TaskClient } from '../data/task-client';
+import { Paginated, Task, TaskPriority, TaskStatus } from '../../data/task';
+import { TaskClient } from '../../data/task-client';
 
 export interface TaskFilters {
   status: TaskStatus | undefined;

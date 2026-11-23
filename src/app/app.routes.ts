@@ -10,17 +10,19 @@ export const routes: Routes = [
     path: '',
     title: 'screens.dashboard',
     data: { search: true },
-    loadComponent: () => import('./dashboard-page').then((m) => m.DashboardPage),
+    loadComponent: () =>
+      import('./pages/dashboard-page/dashboard-page').then((m) => m.DashboardPage),
   },
   {
     path: 'tasks',
     title: 'screens.tasks',
     data: { search: true },
-    loadComponent: () => import('./tasks-page').then((m) => m.TasksPage),
+    loadComponent: () => import('./pages/tasks-page/tasks-page').then((m) => m.TasksPage),
   },
   {
     path: 'analytics',
     title: 'screens.analytics',
-    loadComponent: () => import('./analytics-page').then((m) => m.AnalyticsPage),
+    loadComponent: () =>
+      import('./pages/analytics-page/analytics-page').then((m) => m.AnalyticsPage),
   },
 ];

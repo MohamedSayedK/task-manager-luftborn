@@ -4,9 +4,9 @@ import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { TranslocoService } from '@jsverse/transloco';
-import { Assignee, Paginated, Task, TaskStatus } from '../data/task';
-import { TaskDetailStore } from '../data/task-detail-store';
-import { expectAccessible } from '../../testing/a11y';
+import { Assignee, Paginated, Task, TaskStatus } from '../../data/task';
+import { TaskDetailStore } from '../../data/task-detail-store';
+import { expectAccessible } from '../../../testing/a11y';
 import { TaskSearch } from './task-search';
 import { TaskSearchStore } from './task-search-store';
 

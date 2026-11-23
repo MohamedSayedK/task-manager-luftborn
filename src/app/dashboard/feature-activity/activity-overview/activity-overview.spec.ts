@@ -2,7 +2,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslocoService } from '@jsverse/transloco';
-import { ActivityItem } from '../data/dashboard';
+import { ActivityItem } from '../../data/dashboard';
 import { ActivityOverview } from './activity-overview';
 
 const entry = (overrides: Partial<ActivityItem>): ActivityItem => ({

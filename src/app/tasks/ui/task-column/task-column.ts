@@ -2,9 +2,9 @@ import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { Skeleton } from 'primeng/skeleton';
-import { Task, TaskStatus } from '../data/task';
-import { Move } from '../util/task-order';
-import { TaskCard } from './task-card';
+import { Task, TaskStatus } from '../../data/task';
+import { Move } from '../../util/task-order';
+import { TaskCard } from '../task-card/task-card';
 
 @Component({
   selector: 'app-task-column',

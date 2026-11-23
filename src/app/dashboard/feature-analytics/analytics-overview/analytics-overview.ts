@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { TranslocoPipe } from '@jsverse/transloco';
 import { Button } from 'primeng/button';
 import { UIChart } from 'primeng/chart';
-import { DashboardCoordinator } from '../data/dashboard-coordinator';
-import { injectTranslate } from '../util/inject-translate';
+import { DashboardCoordinator } from '../../data/dashboard-coordinator';
+import { injectTranslate } from '../../util/inject-translate';
 
 interface Slice {
   label: string;

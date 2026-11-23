@@ -2,9 +2,9 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslocoService } from '@jsverse/transloco';
-import { Assignee, Task } from '../data/task';
-import { TaskDetailStore } from '../data/task-detail-store';
-import { expectAccessible } from '../../testing/a11y';
+import { Assignee, Task } from '../../data/task';
+import { TaskDetailStore } from '../../data/task-detail-store';
+import { expectAccessible } from '../../../testing/a11y';
 import { TaskEdit } from './task-edit';
 
 const JOHN: Assignee = {

@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { Button } from 'primeng/button';
 import { Skeleton } from 'primeng/skeleton';
-import { DashboardCoordinator } from '../data/dashboard-coordinator';
-import { StatCardView } from '../ui/stat-card';
+import { DashboardCoordinator } from '../../data/dashboard-coordinator';
+import { StatCardView } from '../../ui/stat-card/stat-card';
 
 /** The row of statistic cards, with placeholders while loading and a retry on failure. */
 @Component({

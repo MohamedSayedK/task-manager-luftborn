@@ -18,12 +18,12 @@ import { Button } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
 import { Select } from 'primeng/select';
 import { SelectButton } from 'primeng/selectbutton';
-import { Task, TaskPriority, TaskStatus } from '../data/task';
-import { TaskDetailStore } from '../data/task-detail-store';
-import { TaskLookupStore } from '../data/task-lookup-store';
-import { TaskColumn } from '../ui/task-column';
-import { injectTranslate } from '../util/inject-translate';
-import { Move, planMove, sortColumn } from '../util/task-order';
+import { Task, TaskPriority, TaskStatus } from '../../data/task';
+import { TaskDetailStore } from '../../data/task-detail-store';
+import { TaskLookupStore } from '../../data/task-lookup-store';
+import { TaskColumn } from '../../ui/task-column/task-column';
+import { injectTranslate } from '../../util/inject-translate';
+import { Move, planMove, sortColumn } from '../../util/task-order';
 import { TaskColumns, TaskSearchStore } from './task-search-store';
 
 /** Labels are message keys, translated where they are shown. */

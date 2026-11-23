@@ -7,9 +7,9 @@ import {
   untracked,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { TaskDetailStore } from './tasks/data/task-detail-store';
-import { TaskEdit } from './tasks/feature-edit/task-edit';
-import { TaskSearch } from './tasks/feature-search/task-search';
+import { TaskDetailStore } from '../../tasks/data/task-detail-store';
+import { TaskEdit } from '../../tasks/feature-edit/task-edit/task-edit';
+import { TaskSearch } from '../../tasks/feature-search/task-search/task-search';
 
 /**
  * The tasks screen. Features may not import each other, so this page at the app root puts the

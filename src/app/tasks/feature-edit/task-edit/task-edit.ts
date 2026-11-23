@@ -10,10 +10,10 @@ import {
 } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { Dialog } from 'primeng/dialog';
-import { TaskDraft } from '../data/task';
-import { TaskDetailStore } from '../data/task-detail-store';
-import { TaskLookupStore } from '../data/task-lookup-store';
-import { TaskForm } from '../ui/task-form';
+import { TaskDraft } from '../../data/task';
+import { TaskDetailStore } from '../../data/task-detail-store';
+import { TaskLookupStore } from '../../data/task-lookup-store';
+import { TaskForm } from '../../ui/task-form/task-form';
 
 /** Dialog for creating a new task or editing an existing one. */
 @Component({

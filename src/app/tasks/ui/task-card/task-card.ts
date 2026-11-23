@@ -6,8 +6,8 @@ import { Avatar } from 'primeng/avatar';
 import { Button } from 'primeng/button';
 import { Menu } from 'primeng/menu';
 import { Tag } from 'primeng/tag';
-import { Task, TaskPriority } from '../data/task';
-import { completedLabel, dueLabel, isOverdue } from '../util/task-due';
+import { Task, TaskPriority } from '../../data/task';
+import { completedLabel, dueLabel, isOverdue } from '../../util/task-due';
 
 type TagSeverity = 'danger' | 'warn' | 'success';
 
