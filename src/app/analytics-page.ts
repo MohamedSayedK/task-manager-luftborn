@@ -39,12 +39,6 @@ import { AnalyticsOverview } from './dashboard/feature-analytics/analytics-overv
       }
     }
   `,
-  template: `
-    <app-analytics-overview />
-    <section [attr.aria-label]="'analytics.recentActivity' | transloco">
-      <h2>{{ 'analytics.recentActivity' | transloco }}</h2>
-      <app-activity-overview />
-    </section>
-  `,
+  templateUrl: './analytics-page.html',
 })
 export class AnalyticsPage {}

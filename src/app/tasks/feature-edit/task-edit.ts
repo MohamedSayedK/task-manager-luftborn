@@ -20,36 +20,7 @@ import { TaskForm } from '../ui/task-form';
   selector: 'app-task-edit',
   imports: [Dialog, TranslocoPipe, TaskForm],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <p-dialog
-      [header]="headerKey() | transloco"
-      [visible]="open()"
-      [modal]="true"
-      [draggable]="false"
-      [closeAriaLabel]="'common.closeDialog' | transloco"
-      [style]="{ width: '34rem' }"
-      [breakpoints]="{ '640px': '95vw' }"
-      (visibleChange)="$event || cancel()"
-    >
-      @if (open()) {
-        @if (store.creating() || store.taskValue()) {
-          <app-task-form
-            [task]="store.taskValue()"
-            [assignees]="lookup.assigneesValue()"
-            [today]="today"
-            [saving]="saving()"
-            [errorMessage]="failed() ? ('edit.saveFailed' | transloco) : undefined"
-            (save)="save($event)"
-            (cancelled)="cancel()"
-          />
-        } @else if (store.taskError()) {
-          <p role="alert">{{ 'edit.loadFailed' | transloco }}</p>
-        } @else {
-          <p>{{ 'edit.loading' | transloco }}</p>
-        }
-      }
-    </p-dialog>
-  `,
+  templateUrl: './task-edit.html',
 })
 export class TaskEdit {
   protected readonly store = inject(TaskDetailStore);

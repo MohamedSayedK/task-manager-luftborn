@@ -1,0 +1,89 @@
+<div class="filters">
+  <p-selectbutton
+    [attr.aria-label]="'board.filterByStatus' | transloco"
+    [options]="statusTabs()"
+    optionLabel="label"
+    optionValue="value"
+    [allowEmpty]="false"
+    [formControl]="status"
+  />
+  <p-select
+    [ariaLabel]="'board.filterByPriority' | transloco"
+    [options]="priorityOptions()"
+    optionLabel="label"
+    optionValue="value"
+    [formControl]="priority"
+  />
+  <p-select
+    [ariaLabel]="'board.filterByAssignee' | transloco"
+    [options]="assigneeOptions()"
+    optionLabel="name"
+    optionValue="id"
+    [formControl]="assignee"
+  />
+  <p-button
+    class="new-task"
+    [label]="'board.newTask' | transloco"
+    icon="pi pi-plus"
+    (onClick)="detail.startCreate()"
+  />
+</div>
+@if (store.pageError()) {
+  <div class="error" role="alert">
+    <span>{{ 'board.loadError' | transloco }}</span>
+    <p-button
+      [label]="'common.retry' | transloco"
+      icon="pi pi-refresh"
+      severity="danger"
+      size="small"
+      [outlined]="true"
+      (onClick)="store.reload()"
+    />
+  </div>
+}
+@if (moveFailed()) {
+  <div class="error" role="alert">
+    <span>{{ 'board.moveError' | transloco }}</span>
+  </div>
+}
+@for (column of columns; track column.status) {
+  <app-task-column
+    [label]="column.labelKey | transloco"
+    [status]="column.status"
+    [tasks]="columnTasks()[column.status]"
+    [draggable]="!detail.moveIsPending()"
+    (moved)="moveTask($event)"
+    [today]="today"
+    [loading]="store.pageStatus() === 'loading'"
+    (edit)="detail.startEdit($event.id)"
+    (remove)="confirmRemove($event)"
+  />
+}
+<p-dialog
+  [header]="'board.deleteHeader' | transloco"
+  [role]="'alertdialog'"
+  [visible]="pendingDelete() !== null"
+  [modal]="true"
+  [draggable]="false"
+  [closeAriaLabel]="'common.closeDialog' | transloco"
+  [style]="{ width: '26rem' }"
+  [breakpoints]="{ '640px': '95vw' }"
+  (visibleChange)="$event || cancelDelete()"
+>
+  @if (pendingDelete(); as task) {
+    <p>{{ 'board.deleteQuestion' | transloco: { title: task.title } }}</p>
+    <div class="actions">
+      <p-button
+        [label]="'common.cancel' | transloco"
+        severity="secondary"
+        [outlined]="true"
+        (onClick)="cancelDelete()"
+      />
+      <p-button
+        [label]="'common.delete' | transloco"
+        severity="danger"
+        (onClick)="deleteConfirmed()"
+      />
+    </div>
+  }
+</p-dialog>

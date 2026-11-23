@@ -22,10 +22,7 @@ import { TaskSearch } from './tasks/feature-search/task-search';
   selector: 'app-tasks-page',
   imports: [TaskSearch, TaskEdit],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <app-task-search [search]="q()" />
-    <app-task-edit />
-  `,
+  templateUrl: './tasks-page.html',
 })
 export class TasksPage {
   private readonly detail = inject(TaskDetailStore);

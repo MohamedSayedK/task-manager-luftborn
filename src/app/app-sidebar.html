@@ -1,0 +1,37 @@
+<nav [attr.aria-label]="'nav.label' | transloco">
+  <a
+    routerLink="/"
+    queryParamsHandling="preserve"
+    routerLinkActive
+    ariaCurrentWhenActive="page"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >
+    <i class="pi pi-home" aria-hidden="true"></i>{{ 'screens.dashboard' | transloco }}
+  </a>
+  <a
+    routerLink="/tasks"
+    queryParamsHandling="preserve"
+    routerLinkActive
+    ariaCurrentWhenActive="page"
+  >
+    <i class="pi pi-list-check" aria-hidden="true"></i>{{ 'screens.tasks' | transloco }}
+  </a>
+  <span class="disabled" aria-disabled="true">
+    <i class="pi pi-calendar" aria-hidden="true"></i>{{ 'nav.calendar' | transloco
+    }}<span class="soon">{{ 'nav.soon' | transloco }}</span>
+  </span>
+  <a routerLink="/analytics" routerLinkActive ariaCurrentWhenActive="page">
+    <i class="pi pi-chart-bar" aria-hidden="true"></i>{{ 'screens.analytics' | transloco }}
+  </a>
+  <span class="disabled" aria-disabled="true">
+    <i class="pi pi-users" aria-hidden="true"></i>{{ 'nav.team' | transloco
+    }}<span class="soon">{{ 'nav.soon' | transloco }}</span>
+  </span>
+  <span class="disabled" aria-disabled="true">
+    <i class="pi pi-cog" aria-hidden="true"></i>{{ 'nav.settings' | transloco
+    }}<span class="soon">{{ 'nav.soon' | transloco }}</span>
+  </span>
+  <a class="new-task" routerLink="/tasks" [queryParams]="{ newTask: true }">
+    <i class="pi pi-plus" aria-hidden="true"></i>{{ 'nav.newTask' | transloco }}
+  </a>
+</nav>

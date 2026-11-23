@@ -41,7 +41,7 @@ Read the relevant document in `docs/` before adding or changing application code
 - Use `computed()` for derived state
 - Use `linkedSignal()` for state derived from multiple reactive sources that must stay synchronized
 - Set `changeDetection: ChangeDetectionStrategy.OnPush` in `@Component` decorator
-- Prefer inline templates for small components
+- Keep every component template in its own `.html` file next to the component (`templateUrl`), never inline
 - Always use Reactive Forms (`FormBuilder`, `FormGroup`, `FormControl`) for building forms, with custom validators where needed. Do NOT use Signal Forms or template-driven forms (the assignment requires Reactive Forms)
 - Do NOT use `ngClass`, use `class` bindings instead
 - Do NOT use `ngStyle`, use `style` bindings instead

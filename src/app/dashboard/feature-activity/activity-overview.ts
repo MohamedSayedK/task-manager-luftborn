@@ -52,34 +52,7 @@ import { describeActivity, Label, timeAgo } from '../util/activity-text';
       color: var(--app-error-text);
     }
   `,
-  template: `
-    @if (store.pageError()) {
-      <div class="error" role="alert">
-        <span>{{ 'activity.loadError' | transloco }}</span>
-        <p-button
-          [label]="'common.retry' | transloco"
-          icon="pi pi-refresh"
-          severity="danger"
-          size="small"
-          [outlined]="true"
-          (onClick)="store.reload()"
-        />
-      </div>
-    } @else if (store.items().length > 0) {
-      <ul>
-        @for (item of store.items(); track item.id) {
-          @let sentence = describe(item);
-          @let age = ago(item.timestamp);
-          <li>
-            <span>{{ sentence.key | transloco: sentence.params }}</span>
-            <time [attr.datetime]="item.timestamp">{{ age.key | transloco: age.params }}</time>
-          </li>
-        }
-      </ul>
-    } @else if (store.pageStatus() !== 'loading') {
-      <p class="empty">{{ 'activity.empty' | transloco }}</p>
-    }
-  `,
+  templateUrl: './activity-overview.html',
 })
 export class ActivityOverview {
   protected readonly store = inject(ActivityStore);

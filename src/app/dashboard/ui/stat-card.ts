@@ -78,20 +78,7 @@ import { changeLabelKey, statTitleKey } from '../util/stat-text';
       color: var(--app-error-text);
     }
   `,
-  template: `
-    @let title = titleKey() ? (titleKey() | transloco) : card().title;
-    @let changeLabel = changeKey() ? (changeKey() | transloco) : card().changeLabel;
-    <article [attr.aria-label]="title">
-      <div class="title">
-        <span class="icon" aria-hidden="true">{{ card().icon }}</span>
-        <h3>{{ title }}</h3>
-      </div>
-      <div class="value">{{ card().value }}</div>
-      <div class="change" [class]="'change ' + card().changeType">
-        {{ card().change }} {{ changeLabel }}
-      </div>
-    </article>
-  `,
+  templateUrl: './stat-card.html',
 })
 export class StatCardView {
   readonly card = input.required<StatCard>();

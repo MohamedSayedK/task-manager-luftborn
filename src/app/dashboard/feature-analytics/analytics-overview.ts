@@ -98,41 +98,7 @@ const CHART_OPTIONS = {
       color: var(--app-error-text);
     }
   `,
-  template: `
-    @if (coordinator.failed()) {
-      <div class="error" role="alert">
-        <span>{{ 'analytics.loadError' | transloco }}</span>
-        <p-button
-          [label]="'common.retry' | transloco"
-          icon="pi pi-refresh"
-          severity="danger"
-          size="small"
-          [outlined]="true"
-          (onClick)="coordinator.reload()"
-        />
-      </div>
-    }
-    <section [attr.aria-label]="'analytics.byPriority' | transloco">
-      <h2>{{ 'analytics.byPriority' | transloco }}</h2>
-      <p-chart type="doughnut" [data]="priorityChart()" [options]="options" aria-hidden="true" />
-      <dl>
-        @for (slice of prioritySlices(); track slice.label) {
-          <dt><span class="swatch" [style.--swatch]="slice.color"></span>{{ slice.label }}</dt>
-          <dd>{{ slice.value }}</dd>
-        }
-      </dl>
-    </section>
-    <section [attr.aria-label]="'analytics.byStatus' | transloco">
-      <h2>{{ 'analytics.byStatus' | transloco }}</h2>
-      <p-chart type="doughnut" [data]="statusChart()" [options]="options" aria-hidden="true" />
-      <dl>
-        @for (slice of statusSlices(); track slice.label) {
-          <dt><span class="swatch" [style.--swatch]="slice.color"></span>{{ slice.label }}</dt>
-          <dd>{{ slice.value }}</dd>
-        }
-      </dl>
-    </section>
-  `,
+  templateUrl: './analytics-overview.html',
 })
 export class AnalyticsOverview {
   protected readonly coordinator = inject(DashboardCoordinator);

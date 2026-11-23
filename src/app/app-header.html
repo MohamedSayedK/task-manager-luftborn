@@ -1,0 +1,65 @@
+<button
+  #menuButton
+  type="button"
+  class="burger"
+  [attr.aria-label]="'header.menu' | transloco"
+  [attr.aria-expanded]="menuOpen()"
+  (click)="menuToggle.emit()"
+>
+  <i class="pi pi-bars" aria-hidden="true"></i>
+</button>
+<div class="brand">
+  <span class="logo"><i class="pi pi-check-square" aria-hidden="true"></i></span>
+  <span>{{ 'header.appName' | transloco }}</span>
+</div>
+@if (showSearch()) {
+  <p-iconfield>
+    <p-inputicon class="pi pi-search" aria-hidden="true" />
+    <input
+      pInputText
+      type="search"
+      [attr.aria-label]="'header.searchLabel' | transloco"
+      [placeholder]="'header.searchPlaceholder' | transloco"
+      [formControl]="search"
+    />
+  </p-iconfield>
+}
+<div class="actions">
+  <button
+    type="button"
+    class="language"
+    [attr.lang]="language.other().code"
+    (click)="language.toggle()"
+  >
+    {{ language.other().name }}
+  </button>
+  <button
+    type="button"
+    class="theme-toggle"
+    [attr.aria-label]="'header.darkMode' | transloco"
+    [attr.aria-pressed]="theme.mode() === 'dark'"
+    (click)="theme.toggle()"
+  >
+    <i
+      class="pi"
+      [class.pi-moon]="theme.mode() === 'light'"
+      [class.pi-sun]="theme.mode() === 'dark'"
+      aria-hidden="true"
+    ></i>
+  </button>
+  <button
+    type="button"
+    class="bell"
+    [class.attention]="!found()"
+    [attr.aria-label]="'header.notifications' | transloco"
+    (click)="ringBell()"
+  >
+    <i class="pi pi-bell" aria-hidden="true"></i>
+  </button>
+  <p-avatar
+    label="MS"
+    shape="circle"
+    [ariaLabel]="'header.signedInAs' | transloco: { name: 'Mohamed Sayed' }"
+  />
+</div>
+<p-toast [position]="language.current() === 'ar' ? 'top-left' : 'top-right'" />

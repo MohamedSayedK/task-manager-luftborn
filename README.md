@@ -308,8 +308,8 @@ A screen reader pass has not been done.
   report, and has a second job that builds the Docker images, starts the stack and checks that the
   app and the API answer. Its first run on GitHub found a real test-isolation bug (a test that
   switched to Arabic leaked the choice through `localStorage` on Node 24 only), now fixed.
-- **Coverage** (`npm run test:coverage`, 349 tests): 97.9% statements, 95.3% branches, 98.3%
-  functions, 97.8% lines. The build fails below 80%. `app.config.ts` and `app.routes.ts` (pure
+- **Coverage** (`npm run test:coverage`, 349 tests): 97.8% statements, 95.0% branches, 98.5%
+  functions, 97.6% lines. The build fails below 80%. `app.config.ts` and `app.routes.ts` (pure
   configuration) and test helpers are excluded.
 
 ## Code quality

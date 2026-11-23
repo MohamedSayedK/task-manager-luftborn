@@ -7,10 +7,7 @@ import { TasksPage } from './tasks-page';
   selector: 'app-dashboard-page',
   imports: [StatisticsOverview, TasksPage],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <app-statistics-overview />
-    <app-tasks-page [q]="q()" [newTask]="newTask()" />
-  `,
+  templateUrl: './dashboard-page.html',
 })
 export class DashboardPage {
   /** The search term from the header, filled in by the router from the `q` query parameter. */

@@ -1,0 +1,36 @@
+<article [class.overdue]="overdue()" [class.done]="task().status === 'done'">
+  <div class="head">
+    <p-tag [value]="priority().labelKey | transloco" [severity]="priority().severity" />
+    <p-button
+      icon="pi pi-ellipsis-v"
+      severity="secondary"
+      size="small"
+      [text]="true"
+      [rounded]="true"
+      [ariaLabel]="'card.actions' | transloco: { title: task().title }"
+      (onClick)="menu.toggle($event)"
+    />
+    <p-menu #menu [popup]="true" [model]="actions()" appendTo="main" />
+  </div>
+  <h3>{{ task().title }}</h3>
+  <p>{{ task().description }}</p>
+  @if (dueText(); as text) {
+    <span class="status">
+      <i [class]="statusIcon()" aria-hidden="true"></i>
+      {{ text.key | transloco: text.params }}
+    </span>
+  }
+  @if (task().tags.length > 0) {
+    <div class="tags">
+      @for (tag of task().tags; track tag) {
+        <span>{{ tag }}</span>
+      }
+    </div>
+  }
+  <footer>
+    <p-avatar [label]="task().assignee.avatar" shape="circle" aria-hidden="true" />
+    <span [attr.title]="task().assignee.name"
+      ><bdi>@{{ firstName() }}</bdi></span
+    >
+  </footer>
+</article>

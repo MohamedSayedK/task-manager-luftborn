@@ -113,52 +113,7 @@ import { TaskCard } from './task-card';
       cursor: default;
     }
   `,
-  template: `
-    <section [attr.aria-label]="label()" [attr.aria-busy]="loading() || null">
-      <header>
-        <h2>{{ label() }}</h2>
-        @if (!loading()) {
-          <span class="count">
-            {{ tasks().length
-            }}<span class="sr-only">
-              {{ 'board.taskWord' | transloco: { count: tasks().length } }}</span
-            >
-          </span>
-        }
-      </header>
-      <div
-        class="cards"
-        cdkDropList
-        [cdkDropListData]="status()"
-        [cdkDropListDisabled]="loading() || !draggable()"
-        (cdkDropListDropped)="drop($event)"
-      >
-        @if (loading()) {
-          @for (placeholder of placeholders; track placeholder) {
-            <p-skeleton height="9rem" borderRadius="0.5rem" />
-          }
-        } @else if (tasks().length === 0) {
-          <div class="empty">
-            <i class="pi pi-inbox" aria-hidden="true"></i>
-            <p class="empty-title">{{ 'board.emptyColumn' | transloco }}</p>
-            <p class="empty-hint">{{ 'board.emptyColumnHint' | transloco }}</p>
-          </div>
-        }
-        @for (task of tasks(); track task.id) {
-          <app-task-card
-            cdkDrag
-            [cdkDragData]="task"
-            [cdkDragDisabled]="!draggable()"
-            [cdkDragStartDelay]="{ touch: 250, mouse: 0 }"
-            [task]="task"
-            [today]="today()"
-            (edit)="edit.emit(task)"
-            (remove)="remove.emit(task)"
-          />
-        }
-      </div>
-    </section>
-  `,
+  templateUrl: './task-column.html',
 })
 export class TaskColumn {
   readonly label = input.required<string>();

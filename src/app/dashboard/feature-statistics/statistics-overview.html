@@ -1,0 +1,22 @@
+<h2 class="sr-only">{{ 'dashboard.heading' | transloco }}</h2>
+@if (coordinator.loading()) {
+  @for (placeholder of placeholders; track placeholder) {
+    <p-skeleton height="5.5rem" borderRadius="0.75rem" />
+  }
+} @else if (coordinator.failed()) {
+  <div class="error" role="alert">
+    <span>{{ 'dashboard.loadError' | transloco }}</span>
+    <p-button
+      [label]="'common.retry' | transloco"
+      icon="pi pi-refresh"
+      severity="danger"
+      size="small"
+      [outlined]="true"
+      (onClick)="coordinator.reload()"
+    />
+  </div>
+} @else {
+  @for (card of coordinator.cards(); track card.id) {
+    <app-stat-card [card]="card" />
+  }
+}
