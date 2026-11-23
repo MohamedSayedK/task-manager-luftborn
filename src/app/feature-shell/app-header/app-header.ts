@@ -20,7 +20,7 @@ import { InputText } from 'primeng/inputtext';
 import { Toast } from 'primeng/toast';
 import { debounceTime, filter, map, startWith } from 'rxjs';
 import { Language } from '../../i18n/language';
-import { Theme } from '../../theme';
+import { Theme } from '../../theme/theme';
 
 /** Typing waits for this pause before the board is asked to search, so it is not hit per key. */
 const SEARCH_DEBOUNCE_MS = 300;

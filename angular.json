@@ -72,8 +72,8 @@
               ],
               "fileReplacements": [
                 {
-                  "replace": "src/app/api-backend.ts",
-                  "with": "src/app/api-backend.demo.ts"
+                  "replace": "src/app/backend/api-backend.ts",
+                  "with": "src/app/backend/api-backend.demo.ts"
                 }
               ],
               "assets": [

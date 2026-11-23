@@ -25,12 +25,12 @@ import textarea from '@primeuix/themes/aura/textarea';
 import toast from '@primeuix/themes/aura/toast';
 import togglebutton from '@primeuix/themes/aura/togglebutton';
 import { providePrimeNG } from 'primeng/config';
-import { apiBackend } from './api-backend';
+import { apiBackend } from './backend/api-backend';
 import { routes } from './app.routes';
 import { PrimeNgTranslation } from './i18n/primeng-translation';
 import { TranslationLoader } from './i18n/translation-loader';
 import { cacheInterceptor } from './shared/data/cache-interceptor';
-import { TranslatedTitleStrategy } from './translated-title-strategy';
+import { TranslatedTitleStrategy } from './i18n/translated-title-strategy';
 
 /**
  * Aura with the blue brand color of the Figma design (the whole primary scale, see below) and

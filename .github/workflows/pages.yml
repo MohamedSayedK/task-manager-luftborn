@@ -2,7 +2,7 @@ name: Pages
 
 # Publishes the app on GitHub Pages. Pages hosts static files only, so this builds the `demo`
 # configuration, where the app answers its own /api requests inside the browser (see
-# src/app/api-backend.demo.ts). Data changes last until the page is reloaded.
+# src/app/backend/api-backend.demo.ts). Data changes last until the page is reloaded.
 
 on:
   push:

@@ -99,7 +99,7 @@ and npm versions are listed under "Prerequisites".
 ### The live demo
 
 The site above is built by `.github/workflows/pages.yml` on every push to `main`, with the `demo`
-configuration of `angular.json`. That configuration replaces `src/app/api-backend.ts`, an empty list
+configuration of `angular.json`. That configuration replaces `src/app/backend/api-backend.ts`, an empty list
 of interceptors, with `api-backend.demo.ts`. Its HTTP interceptor (`src/app/demo/`) answers every
 `/api/...` request in the browser from `mock-api/db.json`, with JSON Server's rules for `_where`
 filters, `_sort`, paging and writes, and a short delay so loading states show. The normal build does
@@ -153,9 +153,13 @@ src/app/
   tasks/       task board, filters, create / edit / delete
   dashboard/   statistics cards, charts, activity feed
   shared/      technical code used by more than one domain (HTTP cache)
-  shell/       header and sidebar
-  pages/       the screens that compose the features
-  app.ts       root component, with app.config.ts and app.routes.ts
+  feature-shell/   header and sidebar
+  feature-pages/   the screens that compose the features
+  i18n/            languages, catalogs, page title strategy
+  theme/           light and dark mode
+  backend/         the interceptors for /api (empty in the normal build, in-browser in the demo)
+  demo/            the in-browser mock API of the demo
+  app.ts           root component, with app.config.ts and app.routes.ts
 ```
 
 Each domain is split into layers: `feature-*` (smart components), `ui` (presentational

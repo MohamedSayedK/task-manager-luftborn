@@ -17,8 +17,11 @@ developers are required to adhere to these rules whenever they modify applicatio
 - Every component lives in a folder named after it, inside its layer folder
   (e.g., `tasks/ui/task-card/`), together with its template (`.html`), styles (`.scss`) and spec.
   A store used by one smart component only sits in that component's folder.
-  Root components go to `src/app/shell/<name>/` (header, sidebar) or `src/app/pages/<name>/`
-  (screens); `app.ts` stays in `src/app`.
+  Root components follow the same naming: `src/app/feature-shell/<name>/` (header, sidebar) and
+  `src/app/feature-pages/<name>/` (screens). `app.ts`, `app.config.ts` and `app.routes.ts` stay in
+  `src/app`, other root code gets a folder (`theme/`, `i18n/`, `backend/`).
+  Never create a `feature-*` folder inside another folder of `src/app` that is not a domain:
+  Sheriff would read the outer folder as a domain.
 - Domains:
   - `tasks`: task CRUD, search, filtering, drag and drop, assignee lookup.
   - `dashboard`: statistics cards, analytics charts, recent activity feed.

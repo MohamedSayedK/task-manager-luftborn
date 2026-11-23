@@ -11,18 +11,18 @@ export const routes: Routes = [
     title: 'screens.dashboard',
     data: { search: true },
     loadComponent: () =>
-      import('./pages/dashboard-page/dashboard-page').then((m) => m.DashboardPage),
+      import('./feature-pages/dashboard-page/dashboard-page').then((m) => m.DashboardPage),
   },
   {
     path: 'tasks',
     title: 'screens.tasks',
     data: { search: true },
-    loadComponent: () => import('./pages/tasks-page/tasks-page').then((m) => m.TasksPage),
+    loadComponent: () => import('./feature-pages/tasks-page/tasks-page').then((m) => m.TasksPage),
   },
   {
     path: 'analytics',
     title: 'screens.analytics',
     loadComponent: () =>
-      import('./pages/analytics-page/analytics-page').then((m) => m.AnalyticsPage),
+      import('./feature-pages/analytics-page/analytics-page').then((m) => m.AnalyticsPage),
   },
 ];
